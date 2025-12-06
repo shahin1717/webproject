@@ -284,28 +284,30 @@
     }
 
     /* ====== CHARTS SECTION (E) ====== */
-    .charts-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1rem;
-    }
+.charts-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;    /* spacing between charts */
+}
 
-    .chart-card {
-      background: #2a3056;
-      border-radius: 12px;
-      padding: 0.9rem 1rem;
-    }
+.chart-card {
+  width: 100%;
+  background: #2a3056;
+  border-radius: 12px;
+  padding: 1.5rem;
+  height: 380px;
 
-    .chart-card-title {
-      font-size: 0.95rem;
-      color: #ffb347;
-      margin-bottom: 0.4rem;
-    }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* center chart */
+}
 
-    canvas {
-      width: 100% !important;
-      height: 220px !important;
-    }
+canvas {
+  width: 60% !important;    /* smaller but clean */
+  height: 260px !important;
+}
+
 
     /* ====== DELETE MODAL ====== */
     .modal-overlay {
@@ -465,7 +467,7 @@
 
   <!-- ====== HEADER (A) ====== -->
   <header class="topbar">
-    <div class="topbar-title">Driving Experience – Dashboard</div>
+    <div class="topbar-title">DriveX – Dashboard</div>
     <nav class="topbar-nav">
       <a href="index.php" class="topbar-link">Main Page</a>
       <a href="WebForm.php" class="topbar-link">Form</a>
@@ -626,20 +628,38 @@
     <!-- E) CHARTS -->
     <section class="section-card" id="section-charts">
       <h2 class="section-title">Conditions Overview</h2>
-      <div class="charts-grid">
-        <div class="chart-card">
-          <div class="chart-card-title">Weather Distribution</div>
-          <canvas id="weatherChart"></canvas>
-        </div>
-        <div class="chart-card">
-          <div class="chart-card-title">Surface Distribution</div>
-          <canvas id="surfaceChart"></canvas>
-        </div>
-        <div class="chart-card">
-          <div class="chart-card-title">Traffic Distribution</div>
-          <canvas id="trafficChart"></canvas>
-        </div>
-      </div>
+      ONLY its internal grid with this upgraded version:
+
+<div class="charts-grid">
+
+    <div class="chart-card">
+        <div class="chart-card-title">Weather Distribution</div>
+        <canvas id="weatherChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <div class="chart-card-title">Surface Distribution</div>
+        <canvas id="surfaceChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <div class="chart-card-title">Traffic Distribution</div>
+        <canvas id="trafficChart"></canvas>
+    </div>
+
+    <!-- NEW MANEUVERS DISTRIBUTION -->
+    <div class="chart-card">
+        <div class="chart-card-title">Maneuvers Distribution</div>
+        <canvas id="maneuverChart"></canvas>
+    </div>
+
+    <!-- NEW MONTHLY ACTIVITY CHART -->
+    <div class="chart-card">
+        <div class="chart-card-title">Monthly Driving Activity</div>
+        <canvas id="monthChart"></canvas>
+    </div>
+
+</div>
     </section>
 
   </div>
@@ -656,7 +676,8 @@
     let weatherChart = null;
     let surfaceChart = null;
     let trafficChart = null;
-
+let maneuverChart = null;
+let monthChart = null;
     let deleteTargetId = null;
 
     if (window.Chart && Chart.defaults && Chart.defaults.global) {
@@ -932,110 +953,146 @@ fillEditDropdowns();
     }
 
     // ====== CHARTS (E) ======
-    function renderCharts() {
-      const weatherCounts = {};
-      const surfaceCounts = {};
-      const trafficCounts = {};
+  function renderCharts() {
 
-      experiences.forEach(exp => {
-        const wID = exp.weatherID;
-        const sID = exp.surfaceID;
-        const tID = exp.trafficID;
+    // ========== COUNTING ==========
+    const weatherCounts = {};
+    const surfaceCounts = {};
+    const trafficCounts = {};
+    const maneuverCounts = {};
+    const dailyCounts = {};
 
-        weatherCounts[wID] = (weatherCounts[wID] || 0) + 1;
-        surfaceCounts[sID] = (surfaceCounts[sID] || 0) + 1;
-        trafficCounts[tID] = (trafficCounts[tID] || 0) + 1;
-      });
+    experiences.forEach(exp => {
+        weatherCounts[exp.weatherID] = (weatherCounts[exp.weatherID] || 0) + 1;
+        surfaceCounts[exp.surfaceID] = (surfaceCounts[exp.surfaceID] || 0) + 1;
+        trafficCounts[exp.trafficID] = (trafficCounts[exp.trafficID] || 0) + 1;
 
-      const weatherLabels = Object.keys(weatherCounts).map(id => {
-        const n = parseInt(id, 10);
-        return weatherMap[n] || ("Weather " + n);
-      });
-      const weatherData = Object.values(weatherCounts);
+        (exp.maneuvers || []).forEach(id => {
+            maneuverCounts[id] = (maneuverCounts[id] || 0) + 1;
+        });
 
-      const surfaceLabels = Object.keys(surfaceCounts).map(id => {
-        const n = parseInt(id, 10);
-        return surfaceMap[n] || ("Surface " + n);
-      });
-      const surfaceData = Object.values(surfaceCounts);
+        const day = exp.date; 
+dailyCounts[day] = (dailyCounts[day] || 0) + 1;
+    });
 
-      const trafficLabels = Object.keys(trafficCounts).map(id => {
-        const n = parseInt(id, 10);
-        return trafficMap[n] || ("Traffic " + n);
-      });
-      const trafficData = Object.values(trafficCounts);
-
-      const wCtx = document.getElementById("weatherChart").getContext("2d");
-      const sCtx = document.getElementById("surfaceChart").getContext("2d");
-      const tCtx = document.getElementById("trafficChart").getContext("2d");
-
-      if (weatherChart) weatherChart.destroy();
-      if (surfaceChart) surfaceChart.destroy();
-      if (trafficChart) trafficChart.destroy();
-
-      weatherChart = new Chart(wCtx, {
-        type: "pie",
-        data: {
-          labels: weatherLabels,
-          datasets: [{
-            data: weatherData,
-            backgroundColor: ["#fdffb6", "#bdb2ff", "#87CEEB", "#9bf6ff", "#a0c4ff", "#caffbf"]
-          }]
+    // Make readable donut sizes + clear labels
+    const pieOptions = {
+        cutoutPercentage: 45,
+        legend: {
+            position: "bottom",
+            labels: { fontColor: "#fff", fontSize: 14, padding: 12 }
         },
-        options: {
-          title: {
-            display: true,
-            text: "Weather",
-            fontSize: 15
-          },
-          legend: {
-            position: "right"
-          }
-        }
-      });
+        animation: { animateScale: true }
+    };
 
-      surfaceChart = new Chart(sCtx, {
-        type: "pie",
-        data: {
-          labels: surfaceLabels,
-          datasets: [{
-            data: surfaceData,
-            backgroundColor: ["#ffddd2", "#457b9d", "#f1faee", "#a8dadc"]
-          }]
-        },
-        options: {
-          title: {
-            display: true,
-            text: "Surface",
-            fontSize: 15
-          },
-          legend: {
-            position: "right"
-          }
-        }
-      });
+    const destroy = chart => { if (chart) chart.destroy(); };
+    destroy(weatherChart);
+    destroy(surfaceChart);
+    destroy(trafficChart);
+    destroy(maneuverChart);
+    destroy(monthChart);
 
-      trafficChart = new Chart(tCtx, {
-        type: "pie",
-        data: {
-          labels: trafficLabels,
-          datasets: [{
-            data: trafficData,
-            backgroundColor: ["#bbf7d0", "#fde68a", "#fecaca"]
-          }]
-        },
-        options: {
-          title: {
-            display: true,
-            text: "Traffic",
-            fontSize: 15
-          },
-          legend: {
-            position: "right"
-          }
+    // ========= WEATHER CHART =========
+    weatherChart = new Chart(
+        document.getElementById("weatherChart").getContext("2d"),
+        {
+            type: "doughnut",
+            data: {
+                labels: Object.keys(weatherCounts).map(id => weatherMap[id]),
+                datasets: [{
+                    data: Object.values(weatherCounts),
+                    backgroundColor: ["#ffadad", "#ffd6a5", "#fdffb6", "#caffbf", "#9bf6ff", "#a0c4ff"]
+                }]
+            },
+            options: pieOptions
         }
-      });
-    }
+    );
+
+    // ========= SURFACE CHART =========
+    surfaceChart = new Chart(
+        document.getElementById("surfaceChart").getContext("2d"),
+        {
+            type: "doughnut",
+            data: {
+                labels: Object.keys(surfaceCounts).map(id => surfaceMap[id]),
+                datasets: [{
+                    data: Object.values(surfaceCounts),
+                    backgroundColor: ["#bde0fe", "#a2d2ff", "#ffc8dd", "#ffafcc"]
+                }]
+            },
+            options: pieOptions
+        }
+    );
+
+    // ========= TRAFFIC CHART =========
+    trafficChart = new Chart(
+        document.getElementById("trafficChart").getContext("2d"),
+        {
+            type: "doughnut",
+            data: {
+                labels: Object.keys(trafficCounts).map(id => trafficMap[id]),
+                datasets: [{
+                    data: Object.values(trafficCounts),
+                    backgroundColor: ["#bbf7d0", "#fde68a", "#fecaca"]
+                }]
+            },
+            options: pieOptions
+        }
+    );
+
+    // ========= MANEUVERS PIE =========
+    maneuverChart = new Chart(
+        document.getElementById("maneuverChart").getContext("2d"),
+        {
+            type: "doughnut",
+            data: {
+                labels: Object.keys(maneuverCounts).map(id => maneuverMap[id]),
+                datasets: [{
+                    data: Object.values(maneuverCounts),
+                    backgroundColor: [
+                        "#ffadad", "#ffd6a5", "#fdffb6", "#caffbf",
+                        "#9bf6ff", "#a0c4ff", "#bdb2ff", "#ffc6ff"
+                    ]
+                }]
+            },
+            options: pieOptions
+        }
+    );
+
+    // ========= MONTHLY LINE CHART =========
+    const sortedDays = Object.keys(dailyCounts).sort();
+    monthChart = new Chart(
+        document.getElementById("monthChart").getContext("2d"),
+        {
+            type: "line",
+            data: {
+                labels: sortedDays,
+                datasets: [{
+                    label: "Drives per Day",
+                    data: sortedDays.map(d => dailyCounts[d]),
+                    borderColor: "#ffb347",
+                    backgroundColor: "rgba(255,179,71,0.25)",
+                    borderWidth: 3,
+                    pointRadius: 6,
+                    pointBackgroundColor: "#ffb347",
+                    tension: 0.35
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: { beginAtZero: true, precision: 0, fontColor: "#fff" }
+                    }],
+                    xAxes: [{
+                        ticks: { fontColor: "#fff" }
+                    }]
+                },
+                legend: { labels: { fontColor: "#fff" } }
+            }
+        }
+    );
+}
+
 
     // ====== DELETE MODAL HANDLING ======
     function openDeleteModal(expId) {
