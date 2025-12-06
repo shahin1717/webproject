@@ -1,5 +1,5 @@
 <?php
-class Accident {
+class Maneuver {
     private int $id;
     private string $description;
 

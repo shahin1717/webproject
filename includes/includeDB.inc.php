@@ -20,7 +20,8 @@ require_once $classesPath . 'DrivingExperience.php';
 require_once $classesPath . 'Weather.php';
 require_once $classesPath . 'Surface.php';
 require_once $classesPath . 'Traffic.php';
-require_once $classesPath . 'Accident.php';
+require_once $classesPath . 'Maneuver.php';
+
 
 // -------------------------------
 // 3. Database credentials

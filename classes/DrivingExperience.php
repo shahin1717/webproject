@@ -9,7 +9,9 @@ class DrivingExperience
     private int $weatherID;
     private int $surfaceID;
     private int $trafficID;
-    private int $accidentID;
+
+    /** @var int[]  List of maneuver IDs */
+    private array $maneuvers;
 
     public function __construct(
         int $expID,
@@ -20,20 +22,20 @@ class DrivingExperience
         int $weatherID,
         int $surfaceID,
         int $trafficID,
-        int $accidentID
+        array $maneuvers = []
     ) {
-        $this->expID       = $expID;
-        $this->date        = $date;
-        $this->startTime   = $startTime;
-        $this->endTime     = $endTime;
-        $this->kilometers  = $kilometers;
-        $this->weatherID   = $weatherID;
-        $this->surfaceID   = $surfaceID;
-        $this->trafficID   = $trafficID;
-        $this->accidentID  = $accidentID;
+        $this->expID      = $expID;
+        $this->date       = $date;
+        $this->startTime  = $startTime;
+        $this->endTime    = $endTime;
+        $this->kilometers = $kilometers;
+        $this->weatherID  = $weatherID;
+        $this->surfaceID  = $surfaceID;
+        $this->trafficID  = $trafficID;
+        $this->maneuvers  = $maneuvers;
     }
 
-    // ----------- GETTERS ----------- //
+    // ---------- GETTERS ---------- //
 
     public function getID(): int {
         return $this->expID;
@@ -67,11 +69,12 @@ class DrivingExperience
         return $this->trafficID;
     }
 
-    public function getAccidentID(): int {
-        return $this->accidentID;
+    /** @return int[] */
+    public function getManeuvers(): array {
+        return $this->maneuvers;
     }
 
-    // ----------- SETTERS ----------- //
+    // ---------- SETTERS ---------- //
 
     public function setDate(string $date): void {
         $this->date = $date;
@@ -101,8 +104,16 @@ class DrivingExperience
         $this->trafficID = $id;
     }
 
-    public function setAccidentID(int $id): void {
-        $this->accidentID = $id;
+    /** @param int[] $list */
+    public function setManeuvers(array $list): void {
+        $this->maneuvers = $list;
+    }
+
+    /** Add a maneuver ID */
+    public function addManeuver(int $id): void {
+        if (!in_array($id, $this->maneuvers)) {
+            $this->maneuvers[] = $id;
+        }
     }
 }
 ?>
