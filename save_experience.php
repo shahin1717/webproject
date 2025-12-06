@@ -27,8 +27,8 @@ $trafficID  = isset($data["trafficID"])  ? (int)$data["trafficID"]  : null;
 
 // NEW — maneuvers array
 $maneuvers = isset($data["maneuvers"]) && is_array($data["maneuvers"])
-             ? $data["maneuvers"]
-             : [];
+    ? $data["maneuvers"]
+    : [];
 
 // Validate required fields
 if (
@@ -123,4 +123,3 @@ echo json_encode([
 ]);
 
 $mysqli->close();
-?>

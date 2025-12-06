@@ -43,7 +43,6 @@ try {
 
     echo json_encode($response);
     exit;
-
 } catch (Exception $e) {
 
     echo json_encode([
@@ -53,4 +52,3 @@ try {
     ]);
     exit;
 }
-?>

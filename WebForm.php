@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Driving Experience</title>
@@ -15,8 +16,9 @@
       box-sizing: border-box;
     }
 
-    html, body {
-  min-height: 100vh;
+    html,
+    body {
+      min-height: 100vh;
     }
 
     body {
@@ -102,7 +104,8 @@
       flex: 1;
       width: 100%;
       max-width: 1100px;
-      margin: 90px auto 40px auto; /* space for topbar */
+      margin: 90px auto 40px auto;
+      /* space for topbar */
       padding: 0 1rem;
       display: flex;
       justify-content: center;
@@ -127,6 +130,7 @@
         opacity: 0;
         transform: translateY(25px);
       }
+
       100% {
         opacity: 1;
         transform: translateY(0);
@@ -249,39 +253,39 @@
     }
 
     /* Dropdown wrapper */
-.dropdown-wrapper {
-  position: relative;
-}
+    .dropdown-wrapper {
+      position: relative;
+    }
 
-/* Closed display area */
-.dropdown-display {
-  background: #434a76;
-  padding: 0.7rem 0.9rem;
-  border-radius: 8px;
-  cursor: pointer;
-  color: #fff;
-  box-shadow: 0 3px 7px rgba(0,0,0,0.28);
-}
+    /* Closed display area */
+    .dropdown-display {
+      background: #434a76;
+      padding: 0.7rem 0.9rem;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #fff;
+      box-shadow: 0 3px 7px rgba(0, 0, 0, 0.28);
+    }
 
-/* Hidden list */
-.dropdown-list {
-  display: none;
-  margin-top: 6px;
-  background: #333a6e;
-  border-radius: 8px;
-  padding: 0.5rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  z-index: 50;
-}
+    /* Hidden list */
+    .dropdown-list {
+      display: none;
+      margin-top: 6px;
+      background: #333a6e;
+      border-radius: 8px;
+      padding: 0.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      z-index: 50;
+    }
 
-.dropdown-list select {
-  width: 100%;
-  height: 150px;
-  padding: 0.5rem;
-  background: #434a76;
-  border-radius: 8px;
-  color: #fff;
-}
+    .dropdown-list select {
+      width: 100%;
+      height: 150px;
+      padding: 0.5rem;
+      background: #434a76;
+      border-radius: 8px;
+      color: #fff;
+    }
 
 
     .btn-primary:hover::before,
@@ -417,12 +421,15 @@
       .form-card {
         padding: 1.6rem 1.4rem;
       }
+
       .card-title {
         font-size: 1.3rem;
       }
+
       .page-content {
         margin-top: 85px;
       }
+
       .review-content {
         padding: 1.4rem 1.4rem 1.4rem 1.4rem;
       }
@@ -432,29 +439,34 @@
       .topbar-title {
         font-size: 1.1rem;
       }
+
       .topbar-nav {
         gap: 0.6rem;
       }
+
       .topbar-link {
         font-size: 0.8rem;
         padding: 0.25rem 0.6rem;
       }
+
       .form-row {
         flex-direction: column;
       }
+
       .review-stats {
         grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
+
 <body>
 
   <header class="topbar">
     <div class="topbar-title">Driving Experience</div>
     <nav class="topbar-nav">
       <a href="dashboard.php" class="topbar-link">Dashboard</a>
-      <a href="webform.php" class="topbar-link">Form</a>
+      <a href="index.php" class="topbar-link">Main Page</a>
     </nav>
   </header>
 
@@ -518,18 +530,18 @@
         </div>
 
         <div class="form-group">
-  <label for="maneuvers">Maneuvers</label>
+          <label for="maneuvers">Maneuvers</label>
 
-  <div id="maneuverDropdown" class="dropdown-wrapper">
-    <div id="maneuverDisplay" class="dropdown-display">
-      Choose maneuvers…
-    </div>
+          <div id="maneuverDropdown" class="dropdown-wrapper">
+            <div id="maneuverDisplay" class="dropdown-display">
+              Choose maneuvers…
+            </div>
 
-    <div id="maneuverList" class="dropdown-list">
-      <select id="maneuvers" name="maneuvers" multiple></select>
-    </div>
-  </div>
-</div>
+            <div id="maneuverList" class="dropdown-list">
+              <select id="maneuvers" name="maneuvers" multiple></select>
+            </div>
+          </div>
+        </div>
 
         <div class="form-buttons">
           <button type="button" class="btn-primary" onclick="submitExperience()">Submit</button>
@@ -554,8 +566,8 @@
         <h3 class="review-subtitle">Search by Experience ID</h3>
         <input type="number" id="search_id" class="search-input" placeholder="Enter ID">
         <button type="button" class="btn-search" onclick="searchInfo()">Search</button>
-        <div id="searchResultBox" 
-     style="
+        <div id="searchResultBox"
+          style="
        background:#2a3056;
        padding:1rem 1.3rem;
        border-radius:12px;
@@ -566,7 +578,7 @@
        line-height:1.5;
        box-shadow:0 4px 10px rgba(0,0,0,0.25);
      ">
-</div>
+        </div>
         <button type="button" class="btn-back" onclick="hideReview()">Back</button>
       </div>
     </div>
@@ -601,25 +613,25 @@
     }
 
     // Toggle list open/close
-document.getElementById("maneuverDisplay").onclick = function () {
-  const list = document.getElementById("maneuverList");
-  list.style.display = (list.style.display === "block") ? "none" : "block";
-};
+    document.getElementById("maneuverDisplay").onclick = function() {
+      const list = document.getElementById("maneuverList");
+      list.style.display = (list.style.display === "block") ? "none" : "block";
+    };
 
-// Close when clicking outside
-document.addEventListener("click", function (e) {
-  const box = document.getElementById("maneuverDropdown");
-  if (!box.contains(e.target)) {
-    document.getElementById("maneuverList").style.display = "none";
-  }
-});
+    // Close when clicking outside
+    document.addEventListener("click", function(e) {
+      const box = document.getElementById("maneuverDropdown");
+      if (!box.contains(e.target)) {
+        document.getElementById("maneuverList").style.display = "none";
+      }
+    });
 
-// Update label with selected items
-document.getElementById("maneuvers").addEventListener("change", function () {
-  const selected = Array.from(this.selectedOptions).map(o => o.textContent);
-  document.getElementById("maneuverDisplay").textContent =
-    selected.length ? selected.join(", ") : "Choose maneuvers…";
-});
+    // Update label with selected items
+    document.getElementById("maneuvers").addEventListener("change", function() {
+      const selected = Array.from(this.selectedOptions).map(o => o.textContent);
+      document.getElementById("maneuverDisplay").textContent =
+        selected.length ? selected.join(", ") : "Choose maneuvers…";
+    });
 
 
     // ====== LOAD STATIC DATA (WEATHER, SURFACE, TRAFFIC, MANEUVERS) ======
@@ -748,7 +760,9 @@ document.getElementById("maneuvers").addEventListener("change", function () {
       try {
         const response = await fetch("https://shahin.alwaysdata.net/webproject/save_experience.php", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json"
+          },
           body: JSON.stringify(payload)
         });
 
@@ -757,8 +771,8 @@ document.getElementById("maneuvers").addEventListener("change", function () {
         if (result.status === "success") {
           showMessage("Experience saved successfully", "120, 80%, 35%");
           setTimeout(() => {
-        window.location.reload();
-    }, 1000);
+            window.location.reload();
+          }, 1000);
 
 
           // Reset form
@@ -847,44 +861,44 @@ document.getElementById("maneuvers").addEventListener("change", function () {
     }
 
 
-    
-   async function searchInfo() {
-  const idVal = document.getElementById("search_id").value;
-  const id = parseInt(idVal, 10);
-  const box = document.getElementById("searchResultBox");
 
-  box.style.display = "none";   // reset
+    async function searchInfo() {
+      const idVal = document.getElementById("search_id").value;
+      const id = parseInt(idVal, 10);
+      const box = document.getElementById("searchResultBox");
 
-  if (!id) {
-    box.innerHTML = `<strong style="color:#ff6b6b">Please enter a valid ID.</strong>`;
-    box.style.display = "block";
-    return;
-  }
+      box.style.display = "none"; // reset
 
-  try {
-    const res = await fetch("https://shahin.alwaysdata.net/webproject/get_experiences.php");
-    const data = await res.json();
-    const exps = Array.isArray(data) ? data : (data.records || []);
+      if (!id) {
+        box.innerHTML = `<strong style="color:#ff6b6b">Please enter a valid ID.</strong>`;
+        box.style.display = "block";
+        return;
+      }
 
-    const match = exps.find(e => parseInt(e.expID, 10) === id);
+      try {
+        const res = await fetch("https://shahin.alwaysdata.net/webproject/get_experiences.php");
+        const data = await res.json();
+        const exps = Array.isArray(data) ? data : (data.records || []);
 
-    if (!match) {
-      box.innerHTML = `<strong style="color:#ff6b6b">No experience found for ID ${id}.</strong>`;
-      box.style.display = "block";
-      return;
-    }
+        const match = exps.find(e => parseInt(e.expID, 10) === id);
 
-    // MAP VALUES
-    const weatherName  = weatherMap[match.weatherID]  || ("Weather " + match.weatherID);
-    const surfaceName  = surfaceMap[match.surfaceID]  || ("Surface " + match.surfaceID);
-    const trafficName  = trafficMap[match.trafficID]  || ("Traffic " + match.trafficID);
+        if (!match) {
+          box.innerHTML = `<strong style="color:#ff6b6b">No experience found for ID ${id}.</strong>`;
+          box.style.display = "block";
+          return;
+        }
 
-    const manList = Array.isArray(match.maneuvers)
-  ? match.maneuvers.map(id => maneuverMap[id] || ("M" + id))
-  : [];
+        // MAP VALUES
+        const weatherName = weatherMap[match.weatherID] || ("Weather " + match.weatherID);
+        const surfaceName = surfaceMap[match.surfaceID] || ("Surface " + match.surfaceID);
+        const trafficName = trafficMap[match.trafficID] || ("Traffic " + match.trafficID);
 
-    // BUILD HTML RESULT
-    box.innerHTML = `
+        const manList = Array.isArray(match.maneuvers) ?
+          match.maneuvers.map(id => maneuverMap[id] || ("M" + id)) :
+          [];
+
+        // BUILD HTML RESULT
+        box.innerHTML = `
       <h3 style="color:#ffb347; margin-bottom:0.4rem;">Experience Details</h3>
 
       <p><strong>Date:</strong> ${match.date}</p>
@@ -900,13 +914,13 @@ document.getElementById("maneuvers").addEventListener("change", function () {
       </p>
     `;
 
-    box.style.display = "block";
+        box.style.display = "block";
 
-  } catch (err) {
-    box.innerHTML = `<strong style="color:#ff6b6b">Connection error while searching.</strong>`;
-    box.style.display = "block";
-  }
-}
+      } catch (err) {
+        box.innerHTML = `<strong style="color:#ff6b6b">Connection error while searching.</strong>`;
+        box.style.display = "block";
+      }
+    }
 
 
 
@@ -917,4 +931,5 @@ document.getElementById("maneuvers").addEventListener("change", function () {
     };
   </script>
 </body>
+
 </html>

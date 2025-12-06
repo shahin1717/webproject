@@ -1,4 +1,5 @@
 <?php
+
 /***********************************************
  * includeDB.inc.php
  * 
@@ -44,5 +45,3 @@ if ($mysqli->connect_errno) {
 
 // Set charset
 $mysqli->set_charset("utf8");
-
-?>

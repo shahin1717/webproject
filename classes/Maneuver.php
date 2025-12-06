@@ -1,5 +1,6 @@
 <?php
-class Maneuver {
+class Maneuver
+{
     private int $id;
     private string $description;
 
@@ -9,12 +10,13 @@ class Maneuver {
         $this->description = $description;
     }
 
-    public function getID(): int {
+    public function getID(): int
+    {
         return $this->id;
     }
 
-    public function getDescription(): string {
+    public function getDescription(): string
+    {
         return $this->description;
     }
 }
-?>
