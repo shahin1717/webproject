@@ -29,8 +29,8 @@ require_once $classesPath . 'Maneuver.php';
 // -------------------------------
 
 $host = "mysql-shahin.alwaysdata.net";
-$user = "shahin";
-$password = "korol2006";
+$user = "shahin_hwtester";
+$password = "tester.123";
 $db   = "shahin_hw_project";
 
 // -------------------------------
