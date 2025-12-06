@@ -465,8 +465,8 @@
   <header class="topbar">
     <div class="topbar-title">Driving Experience</div>
     <nav class="topbar-nav">
-      <a href="dashboard.php" class="topbar-link">Dashboard</a>
       <a href="index.php" class="topbar-link">Main Page</a>
+      <a href="dashboard.php" class="topbar-link">Dashboard</a>
     </nav>
   </header>
 
