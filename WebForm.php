@@ -16,7 +16,7 @@
     }
 
     html, body {
-      height: 100%;
+  min-height: 100vh;
     }
 
     body {
@@ -247,6 +247,42 @@
       color: #2d3356;
       transform: translateY(-1px) scale(1.02);
     }
+
+    /* Dropdown wrapper */
+.dropdown-wrapper {
+  position: relative;
+}
+
+/* Closed display area */
+.dropdown-display {
+  background: #434a76;
+  padding: 0.7rem 0.9rem;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #fff;
+  box-shadow: 0 3px 7px rgba(0,0,0,0.28);
+}
+
+/* Hidden list */
+.dropdown-list {
+  display: none;
+  margin-top: 6px;
+  background: #333a6e;
+  border-radius: 8px;
+  padding: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  z-index: 50;
+}
+
+.dropdown-list select {
+  width: 100%;
+  height: 150px;
+  padding: 0.5rem;
+  background: #434a76;
+  border-radius: 8px;
+  color: #fff;
+}
+
 
     .btn-primary:hover::before,
     .btn-secondary:hover::before,
@@ -482,11 +518,18 @@
         </div>
 
         <div class="form-group">
-          <label for="maneuvers">Maneuvers (hold Ctrl / Cmd to select several)</label>
-          <select id="maneuvers" name="maneuvers" multiple>
-            <!-- Options filled via JS -->
-          </select>
-        </div>
+  <label for="maneuvers">Maneuvers</label>
+
+  <div id="maneuverDropdown" class="dropdown-wrapper">
+    <div id="maneuverDisplay" class="dropdown-display">
+      Choose maneuvers…
+    </div>
+
+    <div id="maneuverList" class="dropdown-list">
+      <select id="maneuvers" name="maneuvers" multiple></select>
+    </div>
+  </div>
+</div>
 
         <div class="form-buttons">
           <button type="button" class="btn-primary" onclick="submitExperience()">Submit</button>
@@ -556,6 +599,28 @@
         bar.classList.remove("visible");
       }, 3500);
     }
+
+    // Toggle list open/close
+document.getElementById("maneuverDisplay").onclick = function () {
+  const list = document.getElementById("maneuverList");
+  list.style.display = (list.style.display === "block") ? "none" : "block";
+};
+
+// Close when clicking outside
+document.addEventListener("click", function (e) {
+  const box = document.getElementById("maneuverDropdown");
+  if (!box.contains(e.target)) {
+    document.getElementById("maneuverList").style.display = "none";
+  }
+});
+
+// Update label with selected items
+document.getElementById("maneuvers").addEventListener("change", function () {
+  const selected = Array.from(this.selectedOptions).map(o => o.textContent);
+  document.getElementById("maneuverDisplay").textContent =
+    selected.length ? selected.join(", ") : "Choose maneuvers…";
+});
+
 
     // ====== LOAD STATIC DATA (WEATHER, SURFACE, TRAFFIC, MANEUVERS) ======
     async function loadComboBoxes() {
