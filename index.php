@@ -1,4 +1,6 @@
-<?php require_once __DIR__ . "/includes/includeDB.inc.php"; ?>
+<?php 
+require_once __DIR__ . "/includes/includeDB.inc.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 

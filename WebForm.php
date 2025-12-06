@@ -1,40 +1,11 @@
-<?php
-require_once __DIR__ . "/includes/includeDB.inc.php";
-
-/* Fetch dropdown data from DB */
-$weatherData = [];
-$surfaceData = [];
-$trafficData = [];
-$accidentData = [];
-
-$result = $mysqli->query("SELECT * FROM Weather");
-while ($row = $result->fetch_assoc()) $weatherData[] = $row;
-
-$result = $mysqli->query("SELECT * FROM Surface");
-while ($row = $result->fetch_assoc()) $surfaceData[] = $row;
-
-$result = $mysqli->query("SELECT * FROM Traffic");
-while ($row = $result->fetch_assoc()) $trafficData[] = $row;
-
-$result = $mysqli->query("SELECT * FROM Accidents");
-while ($row = $result->fetch_assoc()) $accidentData[] = $row;
-?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Driving Experience</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- BACKEND ➜ JS DROPDOWN ARRAYS -->
-  <script>
-    const Weather = <?= json_encode($weatherData); ?>;
-    const Surface = <?= json_encode($surfaceData); ?>;
-    const Traffic = <?= json_encode($trafficData); ?>;
-    const Accidents = <?= json_encode($accidentData); ?>;
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
   <style>
     /* ====== GLOBAL RESET & BASE ====== */
@@ -44,8 +15,7 @@ while ($row = $result->fetch_assoc()) $accidentData[] = $row;
       box-sizing: border-box;
     }
 
-    html,
-    body {
+    html, body {
       height: 100%;
     }
 
@@ -132,8 +102,7 @@ while ($row = $result->fetch_assoc()) $accidentData[] = $row;
       flex: 1;
       width: 100%;
       max-width: 1100px;
-      margin: 90px auto 40px auto;
-      /* space for topbar */
+      margin: 90px auto 40px auto; /* space for topbar */
       padding: 0 1rem;
       display: flex;
       justify-content: center;
@@ -158,7 +127,6 @@ while ($row = $result->fetch_assoc()) $accidentData[] = $row;
         opacity: 0;
         transform: translateY(25px);
       }
-
       100% {
         opacity: 1;
         transform: translateY(0);
@@ -224,6 +192,11 @@ while ($row = $result->fetch_assoc()) $accidentData[] = $row;
       -webkit-appearance: none;
     }
 
+    /* ====== MULTISELECT FOR MANEUVERS ====== */
+    #maneuvers {
+      min-height: 120px;
+    }
+
     /* ====== BUTTONS ====== */
     .form-buttons {
       display: flex;
@@ -284,7 +257,6 @@ while ($row = $result->fetch_assoc()) $accidentData[] = $row;
       opacity: 1;
     }
 
-    /* Different color emphasis (if needed later) */
     .btn-primary {
       background: #ffb347;
       color: #2d3356;
@@ -409,15 +381,12 @@ while ($row = $result->fetch_assoc()) $accidentData[] = $row;
       .form-card {
         padding: 1.6rem 1.4rem;
       }
-
       .card-title {
         font-size: 1.3rem;
       }
-
       .page-content {
         margin-top: 85px;
       }
-
       .review-content {
         padding: 1.4rem 1.4rem 1.4rem 1.4rem;
       }
@@ -427,142 +396,164 @@ while ($row = $result->fetch_assoc()) $accidentData[] = $row;
       .topbar-title {
         font-size: 1.1rem;
       }
-
       .topbar-nav {
         gap: 0.6rem;
       }
-
       .topbar-link {
         font-size: 0.8rem;
         padding: 0.25rem 0.6rem;
       }
-
       .form-row {
         flex-direction: column;
       }
-
       .review-stats {
         grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
-
 <body>
 
   <header class="topbar">
     <div class="topbar-title">Driving Experience</div>
     <nav class="topbar-nav">
       <a href="dashboard.php" class="topbar-link">Dashboard</a>
-      <a href="index.php" class="topbar-link">Home</a>
+      <a href="webform.php" class="topbar-link">Form</a>
     </nav>
   </header>
 
-  <!-- ⭐ MESSAGE BAR -->
+  <!-- MESSAGE BAR -->
   <div id="messageBar"></div>
 
-  <!-- ⭐ MAIN WRAPPER -->
+  <!-- MAIN WRAPPER -->
   <div class="page-content">
 
-    <!-- ⭐ FORM CARD -->
+    <!-- FORM CARD -->
     <div class="form-card" id="formContainer">
       <h2 class="card-title">Add New Driving Experience</h2>
 
       <form id="driveForm" onsubmit="return false;">
         <div class="form-group">
-          <label>Date</label>
+          <label for="expID">Driving Experience ID</label>
+          <input type="number" id="expID" name="expID" min="1">
+        </div>
+
+        <div class="form-group">
+          <label for="date">Date</label>
           <input type="date" id="date" name="date">
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label>Start Time</label>
+            <label for="starttime">Start Time</label>
             <input type="time" id="starttime" name="startTime">
           </div>
 
           <div class="form-group">
-            <label>End Time</label>
+            <label for="endtime">End Time</label>
             <input type="time" id="endtime" name="endTime">
           </div>
         </div>
 
         <div class="form-group">
-          <label>Kilometers</label>
+          <label for="kms">Kilometers</label>
           <input type="number" id="kms" name="kilometers" min="1">
         </div>
 
         <div class="form-group">
-          <label>Weather</label>
+          <label for="weatherDescription">Weather</label>
           <select id="weatherDescription" name="weatherID">
             <option value="">Choose…</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label>Surface</label>
+          <label for="surfaceDescription">Surface</label>
           <select id="surfaceDescription" name="surfaceID">
             <option value="">Choose…</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label>Traffic</label>
+          <label for="trafficDescription">Traffic</label>
           <select id="trafficDescription" name="trafficID">
             <option value="">Choose…</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label>Accident</label>
-          <select id="accidentDescription" name="accidentID">
-            <option value="">Choose…</option>
+          <label for="maneuvers">Maneuvers (hold Ctrl / Cmd to select several)</label>
+          <select id="maneuvers" name="maneuvers" multiple>
+            <!-- Options filled via JS -->
           </select>
         </div>
 
         <div class="form-buttons">
-          <button class="btn-primary" onclick="submitExperience()">Submit</button>
-          <button class="btn-secondary" onclick="reviewDrivingExperience()">Review</button>
+          <button type="button" class="btn-primary" onclick="submitExperience()">Submit</button>
+          <button type="button" class="btn-secondary" onclick="reviewDrivingExperience()">Review</button>
         </div>
       </form>
     </div>
 
-    <!-- ⭐ REVIEW PANEL (Premium Version) -->
+    <!-- REVIEW PANEL -->
     <div id="Review" class="review-panel">
       <div class="review-content">
 
         <h2 class="review-title">Review Summary</h2>
 
         <div class="review-stats">
-          <div class="stat-item"><span>Total Drives:</span> <strong id="totalDr"></strong></div>
-          <div class="stat-item"><span>Total Hours:</span> <strong id="totalH"></strong></div>
-          <div class="stat-item"><span>Total Distance:</span> <strong id="totalD"></strong></div>
-          <div class="stat-item"><span>Total Accidents:</span> <strong id="totalAcc"></strong></div>
+          <div class="stat-item"><span>Total Drives:</span> <strong id="totalDr">0</strong></div>
+          <div class="stat-item"><span>Total Hours:</span> <strong id="totalH">0</strong></div>
+          <div class="stat-item"><span>Total Distance (km):</span> <strong id="totalD">0</strong></div>
+          <div class="stat-item"><span>Total Maneuvers Logged:</span> <strong id="totalMan">0</strong></div>
         </div>
 
-        <!-- Search -->
-        <h3 class="review-subtitle">Search by ID</h3>
+        <h3 class="review-subtitle">Search by Experience ID</h3>
         <input type="number" id="search_id" class="search-input" placeholder="Enter ID">
-        <button class="btn-search" onclick="searchInfo()">Search</button>
+        <button type="button" class="btn-search" onclick="searchInfo()">Search</button>
 
-        <!-- Charts -->
         <div class="chart-section">
           <canvas id="weatherChart"></canvas>
           <canvas id="surfaceChart"></canvas>
         </div>
 
-        <button class="btn-back" onclick="hideReview()">Back</button>
+        <button type="button" class="btn-back" onclick="hideReview()">Back</button>
       </div>
     </div>
   </div>
 
   <script>
-    /* ============================================
-   FETCH STATIC TABLES (Weather, Surface, Traffic, Accidents)
-   ============================================ */
+    // ====== GLOBAL STATE ======
+    let nextExpID = 1;
+    let weatherMap = {};
+    let surfaceMap = {};
+    let trafficMap = {};
+    let maneuverMap = {};
 
+    let weatherChart = null;
+    let surfaceChart = null;
+
+    if (window.Chart && Chart.defaults && Chart.defaults.global) {
+      Chart.defaults.global.defaultFontColor = "#ffffff";
+      Chart.defaults.global.defaultFontSize = 12;
+    }
+
+    // ====== MESSAGE BAR ======
+    function showMessage(text, hslColor) {
+      const bar = document.getElementById("messageBar");
+      bar.textContent = text;
+      bar.style.backgroundColor = `hsl(${hslColor})`;
+      bar.classList.add("visible");
+
+      setTimeout(() => {
+        bar.classList.remove("visible");
+      }, 3500);
+    }
+
+    // ====== LOAD STATIC DATA (WEATHER, SURFACE, TRAFFIC, MANEUVERS) ======
     async function loadComboBoxes() {
       try {
-        const response = await fetch("https://shahin.alwaysdata.net/hwproject/get_static_data.php");
+        const response = await fetch("https://shahin.alwaysdata.net/webproject/get_static_data.php");
         const data = await response.json();
 
         if (data.status !== "success") {
@@ -570,248 +561,326 @@ while ($row = $result->fetch_assoc()) $accidentData[] = $row;
           return;
         }
 
-        fillSelect("weatherDescription", data.weather, "weatherID", "weatherDescription");
-        fillSelect("surfaceDescription", data.surface, "surfaceID", "surfaceDescription");
-        fillSelect("trafficDescription", data.traffic, "trafficID", "trafficDescription");
-        fillSelect("accidentDescription", data.accidents, "accidentID", "accidentDescription");
+        // Build maps
+        weatherMap = {};
+        surfaceMap = {};
+        trafficMap = {};
+        maneuverMap = {};
+
+        data.weather.forEach(w => {
+          weatherMap[w.weatherID] = w.weatherDescription;
+        });
+        data.surface.forEach(s => {
+          surfaceMap[s.surfaceID] = s.surfaceDescription;
+        });
+        data.traffic.forEach(t => {
+          trafficMap[t.trafficID] = t.trafficDescription;
+        });
+        data.maneuvers.forEach(m => {
+          maneuverMap[m.maneuverID] = m.maneuverDescription;
+        });
+
+        fillSelect("weatherDescription", data.weather, "weatherID", "weatherDescription", false);
+        fillSelect("surfaceDescription", data.surface, "surfaceID", "surfaceDescription", false);
+        fillSelect("trafficDescription", data.traffic, "trafficID", "trafficDescription", false);
+        fillSelect("maneuvers", data.maneuvers, "maneuverID", "maneuverDescription", true);
 
       } catch (err) {
         showMessage("Connection error while loading dropdowns", "0, 80%, 50%");
       }
     }
 
-    function fillSelect(selectId, items, valueKey, textKey) {
+    function fillSelect(selectId, items, valueKey, textKey, isMultiple) {
       const sel = document.getElementById(selectId);
-      sel.innerHTML = `<option value="">Select option</option>`;
+      if (!sel) return;
+
+      if (isMultiple) {
+        sel.innerHTML = "";
+      } else {
+        sel.innerHTML = `<option value="">Choose…</option>`;
+      }
 
       items.forEach(row => {
-        let opt = document.createElement("option");
+        const opt = document.createElement("option");
         opt.value = row[valueKey];
         opt.textContent = row[textKey];
         sel.appendChild(opt);
       });
     }
 
-    /* ============================================
-       SHOW MESSAGE BAR
-       ============================================ */
+    // ====== GET NEXT EXPERIENCE ID ======
+    async function initNextExpID() {
+      const expInput = document.getElementById("expID");
+      try {
+        const res = await fetch("https://shahin.alwaysdata.net/webproject/get_experiences.php");
+        const data = await res.json();
 
-    function showMessage(txt, hslColor) {
-      const msg = document.getElementById("messageBar");
-      msg.textContent = txt;
-      msg.style.background = `hsl(${hslColor})`;
-
-      msg.classList.add("visible");
-
-      setTimeout(() => {
-        msg.classList.remove("visible");
-      }, 3500);
-    }
-
-    /* ============================================
-       SAVE DRIVING EXPERIENCE
-       ============================================ */
-
-    async function saveDrivingExperience() {
-
-      const payload = {
-        expID: document.getElementById("driver_exp_id").value,
-        date: document.getElementById("date").value,
-        startTime: document.getElementById("starttime").value,
-        endTime: document.getElementById("endtime").value,
-        kilometers: document.getElementById("kms").value,
-        weatherID: document.getElementById("weatherDescription").value,
-        surfaceID: document.getElementById("surfaceDescription").value,
-        trafficID: document.getElementById("trafficDescription").value,
-        accidentID: document.getElementById("accidentDescription").value,
-      };
-
-      // Simple validation
-      for (const k in payload) {
-        if (payload[k] === "") {
-          showMessage("Please fill all fields", "0,80%,50%");
-          return;
-        }
+        const exps = Array.isArray(data) ? data : (data.records || []);
+        let maxId = 0;
+        exps.forEach(e => {
+          const id = parseInt(e.expID, 10);
+          if (id > maxId) maxId = id;
+        });
+        nextExpID = maxId + 1;
+      } catch (err) {
+        nextExpID = 1;
       }
 
-      if (payload.startTime >= payload.endTime) {
-        showMessage("Start Time must be < End Time!", "0,80%,50%");
+      expInput.value = nextExpID;
+      expInput.placeholder = "Next ID: " + nextExpID;
+    }
+
+    // ====== SUBMIT EXPERIENCE ======
+    async function submitExperience() {
+      const expInput = document.getElementById("expID");
+      const date = document.getElementById("date").value;
+      const start = document.getElementById("starttime").value;
+      const end = document.getElementById("endtime").value;
+      const kms = document.getElementById("kms").value;
+      const weatherID = document.getElementById("weatherDescription").value;
+      const surfaceID = document.getElementById("surfaceDescription").value;
+      const trafficID = document.getElementById("trafficDescription").value;
+      const maneuversSelect = document.getElementById("maneuvers");
+
+      let expID = parseInt(expInput.value, 10);
+      if (!expID || expID <= 0) {
+        expID = nextExpID || 1;
+      }
+
+      // Collect maneuvers array
+      const maneuvers = Array.from(maneuversSelect.selectedOptions).map(opt => parseInt(opt.value, 10));
+
+      // Basic validation
+      if (!date || !start || !end || !kms || !weatherID || !surfaceID || !trafficID || maneuvers.length === 0) {
+        showMessage("Please fill all fields and choose at least one maneuver", "0, 80%, 50%");
         return;
       }
 
+      if (start >= end) {
+        showMessage("Start time must be earlier than end time", "0, 80%, 50%");
+        return;
+      }
+
+      const payload = {
+        expID: expID,
+        date: date,
+        startTime: start,
+        endTime: end,
+        kilometers: parseFloat(kms),
+        weatherID: parseInt(weatherID, 10),
+        surfaceID: parseInt(surfaceID, 10),
+        trafficID: parseInt(trafficID, 10),
+        maneuvers: maneuvers
+      };
+
       try {
-        const response = await fetch("saveExperience.php", {
+        const response = await fetch("https://shahin.alwaysdata.net/webproject/save_experience.php", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
 
         const result = await response.json();
 
         if (result.status === "success") {
-          showMessage("Experience saved!", "120,80%,40%");
-          document.querySelector(".form-card").reset;
-        } else {
-          showMessage(result.msg, "0,80%,50%");
-        }
+          showMessage("Experience saved successfully", "120, 80%, 35%");
 
+          // Reset form
+          document.getElementById("driveForm").reset();
+
+          // Update nextExpID
+          nextExpID = expID + 1;
+          expInput.value = nextExpID;
+          expInput.placeholder = "Next ID: " + nextExpID;
+
+        } else {
+          showMessage(result.msg || "Error while saving experience", "0, 80%, 50%");
+        }
       } catch (err) {
-        showMessage("Connection error while saving data", "0,80%,50%");
+        showMessage("Connection error while saving data", "0, 80%, 50%");
       }
     }
 
-    /* ============================================
-       REVIEW PANEL ANIMATION
-       ============================================ */
-
+    // ====== REVIEW PANEL ======
     function reviewDrivingExperience() {
-      document.querySelector(".review-panel").classList.add("active");
+      const panel = document.getElementById("Review");
+      panel.classList.add("active");
       loadReviewData();
     }
 
     function hideReview() {
-      document.querySelector(".review-panel").classList.remove("active");
+      const panel = document.getElementById("Review");
+      panel.classList.remove("active");
     }
 
-    /* ============================================
-       LOAD REVIEW STATISTICS
-       ============================================ */
-
+    // ====== LOAD REVIEW STATISTICS ======
     async function loadReviewData() {
       try {
-        const response = await fetch("get_experiences.php");
+        const response = await fetch("https://shahin.alwaysdata.net/webproject/get_experiences.php");
         const data = await response.json();
 
-        if (data.status !== "success") {
-          showMessage("Error loading statistics", "0,80%,50%");
+        const exps = Array.isArray(data) ? data : (data.records || []);
+        if (!Array.isArray(exps)) {
+          showMessage("Error loading statistics", "0, 80%, 50%");
           return;
         }
 
-        const exp = data.records;
+        const totalDr = exps.length;
+        let totalDistance = 0;
+        let totalHours = 0;
+        let totalMan = 0;
 
-        // Fill stats
-        document.getElementById("statTotal").textContent = exp.length;
-        document.getElementById("statDistance").textContent =
-          exp.reduce((a, b) => a + parseFloat(b.kilometers), 0);
+        const weatherCounts = {};
+        const surfaceCounts = {};
 
-        document.getElementById("statHours").textContent =
-          exp.reduce((a, b) => a + getHours(b.startTime, b.endTime), 0).toFixed(2);
+        exps.forEach(e => {
+          const km = parseFloat(e.kilometers) || 0;
+          totalDistance += km;
 
-        document.getElementById("statAcc").textContent =
-          exp.filter(x => x.accidentID !== "1").length;
+          const hours = getHours(e.startTime, e.endTime);
+          totalHours += hours;
 
-        document.getElementById("statFine").textContent =
-          exp.filter(x => x.accidentID === "2").length;
+          const maneuvers = Array.isArray(e.maneuvers) ? e.maneuvers : [];
+          totalMan += maneuvers.length;
 
-        document.getElementById("statTraff").textContent =
-          exp.filter(x => x.accidentID === "3").length;
+          const wID = e.weatherID;
+          const sID = e.surfaceID;
 
-        document.getElementById("statRoad").textContent =
-          exp.filter(x => x.accidentID === "4").length;
+          weatherCounts[wID] = (weatherCounts[wID] || 0) + 1;
+          surfaceCounts[sID] = (surfaceCounts[sID] || 0) + 1;
+        });
 
-        document.getElementById("statOther").textContent =
-          exp.filter(x => x.accidentID === "5").length;
+        document.getElementById("totalDr").textContent = totalDr;
+        document.getElementById("totalD").textContent = totalDistance.toFixed(1);
+        document.getElementById("totalH").textContent = totalHours.toFixed(2);
+        document.getElementById("totalMan").textContent = totalMan;
 
-        drawCharts(exp);
+        drawCharts(weatherCounts, surfaceCounts);
 
       } catch (err) {
-        showMessage("Connection error while loading data", "0,80%,50%");
+        showMessage("Connection error while loading data", "0, 80%, 50%");
       }
     }
 
-    /* ============================================
-       HELPER → HOURS DIFFERENCE
-       ============================================ */
-
+    // ====== HOURS DIFFERENCE ======
     function getHours(start, end) {
-      let s = new Date("2000-01-01 " + start);
-      let e = new Date("2000-01-01 " + end);
-      return (e - s) / 1000 / 60 / 60;
+      if (!start || !end) return 0;
+      const s = new Date("2000-01-01T" + start);
+      const e = new Date("2000-01-01T" + end);
+      const diffMs = e - s;
+      return diffMs / 1000 / 60 / 60;
     }
 
-    /* ============================================
-       SEARCH EXPERIENCE BY ID
-       ============================================ */
+    // ====== SEARCH EXPERIENCE BY ID ======
+    async function searchInfo() {
+      const idVal = document.getElementById("search_id").value;
+      const id = parseInt(idVal, 10);
 
-    async function searchExperience() {
-      const id = document.getElementById("search_id").value;
+      if (!id) {
+        showMessage("Please enter a valid ID", "0, 80%, 50%");
+        return;
+      }
 
       try {
-        const res = await fetch("get_experiences.php");
+        const res = await fetch("https://shahin.alwaysdata.net/webproject/get_experiences.php");
         const data = await res.json();
+        const exps = Array.isArray(data) ? data : (data.records || []);
 
-        const match = data.records.find(e => e.expID == id);
+        const match = exps.find(e => parseInt(e.expID, 10) === id);
 
         if (!match) {
-          showMessage("Experience not found", "0,80%,50%");
+          showMessage("Experience not found", "0, 80%, 50%");
           return;
         }
 
-        showMessage(
-          `Found! Date: ${match.date}, KM: ${match.kilometers}`,
-          "120,80%,40%"
-        );
+        const weatherName = weatherMap[match.weatherID] || ("Weather " + match.weatherID);
+        const surfaceName = surfaceMap[match.surfaceID] || ("Surface " + match.surfaceID);
+        const trafficName = trafficMap[match.trafficID] || ("Traffic " + match.trafficID);
+        const maneuvers = Array.isArray(match.maneuvers) ? match.maneuvers : [];
+        const manNames = maneuvers.map(m => m.description || maneuverMap[m.maneuverID] || ("M" + m.maneuverID));
+
+        const summary =
+          "Found: Date " + match.date +
+          ", " + match.startTime + "-" + match.endTime +
+          ", " + match.kilometers + " km" +
+          ", Weather: " + weatherName +
+          ", Surface: " + surfaceName +
+          ", Traffic: " + trafficName +
+          (manNames.length ? ", Maneuvers: " + manNames.join(", ") : "");
+
+        showMessage(summary, "120, 80%, 35%");
 
       } catch (err) {
-        showMessage("Connection error", "0,80%,50%");
+        showMessage("Connection error while searching", "0, 80%, 50%");
       }
     }
 
-    /* ============================================
-       CHARTS (Weather + Surface)
-       ============================================ */
-
-    let weatherChart, surfaceChart;
-
-    function drawCharts(exps) {
-
-      // Count values
-      const weatherCounts = {};
-      const surfaceCounts = {};
-
-      exps.forEach(e => {
-        weatherCounts[e.weatherID] = (weatherCounts[e.weatherID] || 0) + 1;
-        surfaceCounts[e.surfaceID] = (surfaceCounts[e.surfaceID] || 0) + 1;
+    // ====== DRAW CHARTS ======
+    function drawCharts(weatherCounts, surfaceCounts) {
+      const weatherLabels = Object.keys(weatherCounts).map(id => {
+        return weatherMap[id] || ("Weather " + id);
       });
+      const weatherValues = Object.values(weatherCounts);
 
-      // Weather
+      const surfaceLabels = Object.keys(surfaceCounts).map(id => {
+        return surfaceMap[id] || ("Surface " + id);
+      });
+      const surfaceValues = Object.values(surfaceCounts);
+
+      const weatherCtx = document.getElementById("weatherChart").getContext("2d");
+      const surfaceCtx = document.getElementById("surfaceChart").getContext("2d");
+
       if (weatherChart) weatherChart.destroy();
-      weatherChart = new Chart(document.getElementById("weatherChart"), {
+      if (surfaceChart) surfaceChart.destroy();
+
+      weatherChart = new Chart(weatherCtx, {
         type: "pie",
         data: {
-          labels: Object.keys(weatherCounts),
+          labels: weatherLabels,
           datasets: [{
-            data: Object.values(weatherCounts),
+            data: weatherValues,
             backgroundColor: ["#fdffb6", "#bdb2ff", "#87CEEB", "#9bf6ff", "#a0c4ff", "#caffbf"]
           }]
+        },
+        options: {
+          title: {
+            display: true,
+            text: "Weather Conditions",
+            fontSize: 16
+          },
+          legend: {
+            position: "right"
+          }
         }
       });
 
-      // Surface
-      if (surfaceChart) surfaceChart.destroy();
-      surfaceChart = new Chart(document.getElementById("surfaceChart"), {
+      surfaceChart = new Chart(surfaceCtx, {
         type: "pie",
         data: {
-          labels: Object.keys(surfaceCounts),
+          labels: surfaceLabels,
           datasets: [{
-            data: Object.values(surfaceCounts),
+            data: surfaceValues,
             backgroundColor: ["#ffddd2", "#457b9d", "#f1faee", "#a8dadc"]
           }]
+        },
+        options: {
+          title: {
+            display: true,
+            text: "Surface Conditions",
+            fontSize: 16
+          },
+          legend: {
+            position: "right"
+          }
         }
       });
     }
 
-    /* ============================================
-       PAGE INIT
-       ============================================ */
-
+    // ====== INIT PAGE ======
     window.onload = () => {
       loadComboBoxes();
+      initNextExpID();
     };
   </script>
-
 </body>
-
 </html>
