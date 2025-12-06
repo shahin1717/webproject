@@ -511,12 +511,19 @@
         <h3 class="review-subtitle">Search by Experience ID</h3>
         <input type="number" id="search_id" class="search-input" placeholder="Enter ID">
         <button type="button" class="btn-search" onclick="searchInfo()">Search</button>
-
-        <div class="chart-section">
-          <canvas id="weatherChart"></canvas>
-          <canvas id="surfaceChart"></canvas>
-        </div>
-
+        <div id="searchResultBox" 
+     style="
+       background:#2a3056;
+       padding:1rem 1.3rem;
+       border-radius:12px;
+       margin-top:1rem;
+       margin-bottom:1rem;
+       color:#ffffff;
+       display:none;
+       line-height:1.5;
+       box-shadow:0 4px 10px rgba(0,0,0,0.25);
+     ">
+</div>
         <button type="button" class="btn-back" onclick="hideReview()">Back</button>
       </div>
     </div>
@@ -684,6 +691,10 @@
 
         if (result.status === "success") {
           showMessage("Experience saved successfully", "120, 80%, 35%");
+          setTimeout(() => {
+        window.location.reload();
+    }, 1000);
+
 
           // Reset form
           document.getElementById("driveForm").reset();
@@ -755,7 +766,6 @@
         document.getElementById("totalH").textContent = totalHours.toFixed(2);
         document.getElementById("totalMan").textContent = totalMan;
 
-        drawCharts(weatherCounts, surfaceCounts);
 
       } catch (err) {
         showMessage("Connection error while loading data", "0, 80%, 50%");
@@ -771,110 +781,69 @@
       return diffMs / 1000 / 60 / 60;
     }
 
-    // ====== SEARCH EXPERIENCE BY ID ======
-    async function searchInfo() {
-      const idVal = document.getElementById("search_id").value;
-      const id = parseInt(idVal, 10);
 
-      if (!id) {
-        showMessage("Please enter a valid ID", "0, 80%, 50%");
-        return;
-      }
+    
+   async function searchInfo() {
+  const idVal = document.getElementById("search_id").value;
+  const id = parseInt(idVal, 10);
+  const box = document.getElementById("searchResultBox");
 
-      try {
-        const res = await fetch("https://shahin.alwaysdata.net/webproject/get_experiences.php");
-        const data = await res.json();
-        const exps = Array.isArray(data) ? data : (data.records || []);
+  box.style.display = "none";   // reset
 
-        const match = exps.find(e => parseInt(e.expID, 10) === id);
+  if (!id) {
+    box.innerHTML = `<strong style="color:#ff6b6b">Please enter a valid ID.</strong>`;
+    box.style.display = "block";
+    return;
+  }
 
-        if (!match) {
-          showMessage("Experience not found", "0, 80%, 50%");
-          return;
-        }
+  try {
+    const res = await fetch("https://shahin.alwaysdata.net/webproject/get_experiences.php");
+    const data = await res.json();
+    const exps = Array.isArray(data) ? data : (data.records || []);
 
-        const weatherName = weatherMap[match.weatherID] || ("Weather " + match.weatherID);
-        const surfaceName = surfaceMap[match.surfaceID] || ("Surface " + match.surfaceID);
-        const trafficName = trafficMap[match.trafficID] || ("Traffic " + match.trafficID);
-        const maneuvers = Array.isArray(match.maneuvers) ? match.maneuvers : [];
-        const manNames = maneuvers.map(m => m.description || maneuverMap[m.maneuverID] || ("M" + m.maneuverID));
+    const match = exps.find(e => parseInt(e.expID, 10) === id);
 
-        const summary =
-          "Found: Date " + match.date +
-          ", " + match.startTime + "-" + match.endTime +
-          ", " + match.kilometers + " km" +
-          ", Weather: " + weatherName +
-          ", Surface: " + surfaceName +
-          ", Traffic: " + trafficName +
-          (manNames.length ? ", Maneuvers: " + manNames.join(", ") : "");
-
-        showMessage(summary, "120, 80%, 35%");
-
-      } catch (err) {
-        showMessage("Connection error while searching", "0, 80%, 50%");
-      }
+    if (!match) {
+      box.innerHTML = `<strong style="color:#ff6b6b">No experience found for ID ${id}.</strong>`;
+      box.style.display = "block";
+      return;
     }
 
-    // ====== DRAW CHARTS ======
-    function drawCharts(weatherCounts, surfaceCounts) {
-      const weatherLabels = Object.keys(weatherCounts).map(id => {
-        return weatherMap[id] || ("Weather " + id);
-      });
-      const weatherValues = Object.values(weatherCounts);
+    // MAP VALUES
+    const weatherName  = weatherMap[match.weatherID]  || ("Weather " + match.weatherID);
+    const surfaceName  = surfaceMap[match.surfaceID]  || ("Surface " + match.surfaceID);
+    const trafficName  = trafficMap[match.trafficID]  || ("Traffic " + match.trafficID);
 
-      const surfaceLabels = Object.keys(surfaceCounts).map(id => {
-        return surfaceMap[id] || ("Surface " + id);
-      });
-      const surfaceValues = Object.values(surfaceCounts);
+    const manList = Array.isArray(match.maneuvers)
+  ? match.maneuvers.map(id => maneuverMap[id] || ("M" + id))
+  : [];
 
-      const weatherCtx = document.getElementById("weatherChart").getContext("2d");
-      const surfaceCtx = document.getElementById("surfaceChart").getContext("2d");
+    // BUILD HTML RESULT
+    box.innerHTML = `
+      <h3 style="color:#ffb347; margin-bottom:0.4rem;">Experience Details</h3>
 
-      if (weatherChart) weatherChart.destroy();
-      if (surfaceChart) surfaceChart.destroy();
+      <p><strong>Date:</strong> ${match.date}</p>
+      <p><strong>Time:</strong> ${match.startTime} – ${match.endTime}</p>
+      <p><strong>Kilometers:</strong> ${match.kilometers}</p>
 
-      weatherChart = new Chart(weatherCtx, {
-        type: "pie",
-        data: {
-          labels: weatherLabels,
-          datasets: [{
-            data: weatherValues,
-            backgroundColor: ["#fdffb6", "#bdb2ff", "#87CEEB", "#9bf6ff", "#a0c4ff", "#caffbf"]
-          }]
-        },
-        options: {
-          title: {
-            display: true,
-            text: "Weather Conditions",
-            fontSize: 16
-          },
-          legend: {
-            position: "right"
-          }
-        }
-      });
+      <p><strong>Weather:</strong> ${weatherName}</p>
+      <p><strong>Surface:</strong> ${surfaceName}</p>
+      <p><strong>Traffic:</strong> ${trafficName}</p>
 
-      surfaceChart = new Chart(surfaceCtx, {
-        type: "pie",
-        data: {
-          labels: surfaceLabels,
-          datasets: [{
-            data: surfaceValues,
-            backgroundColor: ["#ffddd2", "#457b9d", "#f1faee", "#a8dadc"]
-          }]
-        },
-        options: {
-          title: {
-            display: true,
-            text: "Surface Conditions",
-            fontSize: 16
-          },
-          legend: {
-            position: "right"
-          }
-        }
-      });
-    }
+      <p><strong>Maneuvers:</strong> 
+         ${manList.length ? manList.join(", ") : "None"}
+      </p>
+    `;
+
+    box.style.display = "block";
+
+  } catch (err) {
+    box.innerHTML = `<strong style="color:#ff6b6b">Connection error while searching.</strong>`;
+    box.style.display = "block";
+  }
+}
+
+
 
     // ====== INIT PAGE ======
     window.onload = () => {
