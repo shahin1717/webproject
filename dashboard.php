@@ -169,6 +169,23 @@
       font-size: 0.85rem;
     }
 
+    /* GREEN EDIT BUTTON */
+.btn-edit {
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid #4ade80; /* green border */
+  background: rgba(74, 222, 128, 0.12); /* soft green */
+  color: #bbf7d0; /* light green text */
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: 0.2s ease;
+}
+
+.btn-edit:hover {
+  background: #4ade80;  /* bright green */
+  color: #1f2937;       /* dark text */
+}
+
     .icon-label span.icon {
       font-size: 1rem;
     }
@@ -380,6 +397,68 @@
         padding: 0.25rem 0.6rem;
       }
     }
+
+
+.export-btn {
+  --accent: #ffb347;
+  --accent-dark: #d68a2b;
+  --overlay: rgba(255, 179, 71, 0.25);
+    
+  border: none;
+  display: inline-block;
+  position: relative;
+  padding: 0.7em 2.4em;
+  font-size: 18px;
+  background: transparent;
+  cursor: pointer;
+  user-select: none;
+  overflow: hidden;
+  color: var(--accent);
+  z-index: 1;
+  font-family: inherit;
+  font-weight: 600;
+}
+
+.export-btn span {
+  position: absolute;
+  inset: 0;
+  border: 3px solid var(--accent);
+  border-radius: 8px;
+  z-index: -1;
+}
+
+.export-btn span::before {
+  content: "";
+  position: absolute;
+  width: 8%;
+  height: 500%;
+  background: var(--overlay);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-60deg);
+  transition: 0.35s ease;
+}
+
+.export-btn:hover span::before {
+  transform: translate(-50%, -50%) rotate(-90deg);
+  width: 100%;
+  background: var(--accent);
+}
+
+.export-btn:hover {
+  color: #1d1f33;
+}
+
+.export-btn:active span::before {
+  background: var(--accent-dark);
+}
+.export-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* centers horizontally */
+    margin: 20px 0;
+}
+
   </style>
 </head>
 <body>
@@ -408,6 +487,47 @@
     </div>
   </div>
 
+  <div id="editModal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-title">Edit Experience</div>
+
+    <form id="editForm">
+
+      <input type="hidden" id="editExpID">
+
+      <label>Date:</label>
+      <input type="date" id="editDate" class="modal-input"><br>
+
+      <label>Start:</label>
+      <input type="time" id="editStart" class="modal-input"><br>
+
+      <label>End:</label>
+      <input type="time" id="editEnd" class="modal-input"><br>
+
+      <label>Kilometers:</label>
+      <input type="number" id="editKm" class="modal-input"><br>
+
+      <label>Weather:</label>
+      <select id="editWeather" class="modal-input"></select><br>
+
+      <label>Surface:</label>
+      <select id="editSurface" class="modal-input"></select><br>
+
+      <label>Traffic:</label>
+      <select id="editTraffic" class="modal-input"></select><br>
+
+      <label>Maneuvers:</label>
+      <select id="editMans" class="modal-input" multiple></select><br>
+
+    </form>
+
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" id="editCancelBtn">Cancel</button>
+      <button class="btn-modal-confirm" id="editSaveBtn">Save</button>
+    </div>
+  </div>
+</div>
+
   <!-- MAIN CONTENT -->
   <div class="page-content">
 
@@ -432,6 +552,13 @@
           <!-- Filled by JS -->
         </tbody>
       </table>
+      <div class="export-wrapper">
+    <button id="exportCSV" class="export-btn">
+        📥 Export CSV
+        <span></span>
+    </button>
+</div>
+
     </section>
 
     <!-- C) GOALS / PROGRESS BARS -->
@@ -623,6 +750,54 @@
         staticData.maneuvers.forEach(m => {
           maneuverMap[m.maneuverID] = m.maneuverDescription;
         });
+        function fillEditDropdowns() {
+    const wSel = document.getElementById("editWeather");
+    const sSel = document.getElementById("editSurface");
+    const tSel = document.getElementById("editTraffic");
+    const mSel = document.getElementById("editMans");
+
+    if (!wSel || !sSel || !tSel || !mSel) return;
+
+    wSel.innerHTML = "";
+    sSel.innerHTML = "";
+    tSel.innerHTML = "";
+    mSel.innerHTML = "";
+
+    // WEATHER OPTIONS
+    Object.keys(weatherMap).forEach(id => {
+        const opt = document.createElement("option");
+        opt.value = id;
+        opt.textContent = weatherMap[id];
+        wSel.appendChild(opt);
+    });
+
+    // SURFACE OPTIONS
+    Object.keys(surfaceMap).forEach(id => {
+        const opt = document.createElement("option");
+        opt.value = id;
+        opt.textContent = surfaceMap[id];
+        sSel.appendChild(opt);
+    });
+
+    // TRAFFIC OPTIONS
+    Object.keys(trafficMap).forEach(id => {
+        const opt = document.createElement("option");
+        opt.value = id;
+        opt.textContent = trafficMap[id];
+        tSel.appendChild(opt);
+    });
+
+    // MANEUVER OPTIONS (base list)
+    Object.keys(maneuverMap).forEach(id => {
+        const opt = document.createElement("option");
+        opt.value = id;
+        opt.textContent = maneuverMap[id];
+        mSel.appendChild(opt);
+    });
+}
+
+// Call it immediately after maps are built
+fillEditDropdowns();
 
         experiences = Array.isArray(expData) ? expData : (expData.records || []);
         if (!Array.isArray(experiences)) experiences = [];
@@ -687,7 +862,9 @@
                 data: "expID",
                 title: "Action",
                 render: function(id) {
+                    
                     return `
+                        <button class="btn-edit" data-exp-id="${id}">Edit</button>
                         <button class="btn-delete" data-exp-id="${id}">
                             Delete
                         </button>
@@ -910,11 +1087,108 @@
       }
     }
 
+    function openEditModal(expId) {
+    const exp = experiences.find(x => x.expID === expId);
+    if (!exp) return;
+
+    document.getElementById("editExpID").value = exp.expID;
+    document.getElementById("editDate").value = exp.date;
+    document.getElementById("editStart").value = exp.startTime;
+    document.getElementById("editEnd").value = exp.endTime;
+    document.getElementById("editKm").value = exp.kilometers;
+    document.getElementById("editWeather").value = exp.weatherID;
+    document.getElementById("editSurface").value = exp.surfaceID;
+    document.getElementById("editTraffic").value = exp.trafficID;
+
+    const mansSelect = document.getElementById("editMans");
+    mansSelect.innerHTML = "";
+
+    Object.keys(maneuverMap).forEach(id => {
+        const opt = document.createElement("option");
+        opt.value = id;
+        opt.textContent = maneuverMap[id];
+        if (exp.maneuvers.includes(parseInt(id))) opt.selected = true;
+        mansSelect.appendChild(opt);
+    });
+
+    document.getElementById("editModal").classList.add("visible");
+}
+
+document.getElementById("editSaveBtn").addEventListener("click", async () => {
+    const expID = parseInt(document.getElementById("editExpID").value);
+    
+    const payload = {
+        expID: expID,
+        date: document.getElementById("editDate").value,
+        startTime: document.getElementById("editStart").value,
+        endTime: document.getElementById("editEnd").value,
+        kilometers: parseFloat(document.getElementById("editKm").value),
+        weatherID: parseInt(document.getElementById("editWeather").value),
+        surfaceID: parseInt(document.getElementById("editSurface").value),
+        trafficID: parseInt(document.getElementById("editTraffic").value),
+        maneuvers: Array.from(
+            document.getElementById("editMans").selectedOptions
+        ).map(o => parseInt(o.value))
+    };
+
+    const res = await fetch("https://shahin.alwaysdata.net/webproject/edit_experience.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+
+    if (data.status === "success") {
+        showMessage("Experience updated", "120,80%,35%");
+        closeEditModal();
+        loadDashboard(); // refresh everything
+    } else {
+        showMessage("Error updating", "0,80%,50%");
+    }
+});
+function closeEditModal() {
+    document.getElementById("editModal").classList.remove("visible");
+}
+document.getElementById("editCancelBtn").onclick = closeEditModal;
+
+document.getElementById("exportCSV").addEventListener("click", () => {
+    let csv = "ID,Date,Start,End,Kilometers,Weather,Surface,Traffic,Maneuvers\n";
+
+    experiences.forEach(exp => {
+        const mans = (exp.maneuvers || []).map(id => maneuverMap[id]).join(";");
+        csv += [
+            exp.expID,
+            exp.date,
+            exp.startTime,
+            exp.endTime,
+            exp.kilometers,
+            weatherMap[exp.weatherID],
+            surfaceMap[exp.surfaceID],
+            trafficMap[exp.trafficID],
+            mans
+        ].join(",") + "\n";
+    });
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "driving_experiences.csv";
+    link.click();
+});
+
+
     // ====== EVENT LISTENERS ======
-    document.addEventListener("click", (e) => {
-    if (e.target.matches(".btn-delete")) {
+document.addEventListener("click", (e) => {
+  if (e.target.matches(".btn-delete")) {
+    const expId = parseInt(e.target.getAttribute("data-exp-id"), 10);
+    openDeleteModal(expId);
+  }
+});
+document.addEventListener("click", (e) => {
+    if (e.target.matches(".btn-edit")) {
         const expId = parseInt(e.target.getAttribute("data-exp-id"), 10);
-        openDeleteModal(expId);
+        openEditModal(expId);
     }
 });
 

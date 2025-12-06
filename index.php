@@ -27,6 +27,13 @@ require_once __DIR__ . "/includes/includeDB.inc.php";
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
+        #appTagline {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1.5rem;
+            color: #d1d5f0;
+            margin-bottom: 2rem;
+        }
+
         .container {
             text-align: center;
             background: #333a6e;
@@ -82,7 +89,10 @@ require_once __DIR__ . "/includes/includeDB.inc.php";
 
 <body>
     <div class="container">
-        <h1 id="appName">DriveX</h1> <button class="btn" onclick="location.href='dashboard.php'"> Dashboard </button> <button class="btn" onclick="location.href='WebForm.php'"> Driving Experience Form </button>
+        <h1 id="appName">DriveX</h1> 
+        <h3 id="appTagline">«Your personal driving assistant»</h3>
+        <button class="btn" onclick="location.href='dashboard.php'"> Dashboard </button> 
+        <button class="btn" onclick="location.href='WebForm.php'"> Driving Experience Form </button>
     </div>
 </body>
 
