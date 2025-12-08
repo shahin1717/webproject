@@ -637,7 +637,7 @@
     // ====== LOAD STATIC DATA (WEATHER, SURFACE, TRAFFIC, MANEUVERS) ======
     async function loadComboBoxes() {
       try {
-        const response = await fetch("https://shahin.alwaysdata.net/webproject/get_static_data.php");
+        const response = await fetch("https://shahin.alwaysdata.net/webproject/routes/get_static_data.php");
         const data = await response.json();
 
         if (data.status !== "success") {
@@ -696,7 +696,7 @@
     async function initNextExpID() {
       const expInput = document.getElementById("expID");
       try {
-        const res = await fetch("https://shahin.alwaysdata.net/webproject/get_experiences.php");
+        const res = await fetch("https://shahin.alwaysdata.net/webproject/routes/get_experiences.php");
         const data = await res.json();
 
         const exps = Array.isArray(data) ? data : (data.records || []);
@@ -758,7 +758,7 @@
       };
 
       try {
-        const response = await fetch("https://shahin.alwaysdata.net/webproject/save_experience.php", {
+        const response = await fetch("https://shahin.alwaysdata.net/webproject/routes/save_experience.php", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -806,7 +806,7 @@
     // ====== LOAD REVIEW STATISTICS ======
     async function loadReviewData() {
       try {
-        const response = await fetch("https://shahin.alwaysdata.net/webproject/get_experiences.php");
+        const response = await fetch("https://shahin.alwaysdata.net/webproject/routes/get_experiences.php");
         const data = await response.json();
 
         const exps = Array.isArray(data) ? data : (data.records || []);
@@ -876,7 +876,7 @@
       }
 
       try {
-        const res = await fetch("https://shahin.alwaysdata.net/webproject/get_experiences.php");
+        const res = await fetch("https://shahin.alwaysdata.net/webproject/routes/get_experiences.php");
         const data = await res.json();
         const exps = Array.isArray(data) ? data : (data.records || []);
 

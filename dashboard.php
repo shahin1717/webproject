@@ -741,8 +741,8 @@ let monthChart = null;
     async function loadDashboard() {
       try {
         const [staticRes, expRes] = await Promise.all([
-          fetch("https://shahin.alwaysdata.net/webproject/get_static_data.php"),
-          fetch("https://shahin.alwaysdata.net/webproject/get_experiences.php")
+          fetch("https://shahin.alwaysdata.net/webproject/routes/get_static_data.php"),
+          fetch("https://shahin.alwaysdata.net/webproject/routes/get_experiences.php")
         ]);
 
         const staticData = await staticRes.json();
@@ -1115,7 +1115,7 @@ dailyCounts[day] = (dailyCounts[day] || 0) + 1;
       if (!deleteTargetId) return;
 
       try {
-        const res = await fetch("https://shahin.alwaysdata.net/webproject/delete_experience.php", {
+        const res = await fetch("https://shahin.alwaysdata.net/webproject/routes/delete_experience.php", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -1188,7 +1188,7 @@ document.getElementById("editSaveBtn").addEventListener("click", async () => {
         ).map(o => parseInt(o.value))
     };
 
-    const res = await fetch("https://shahin.alwaysdata.net/webproject/edit_experience.php", {
+    const res = await fetch("https://shahin.alwaysdata.net/webproject/routes/edit_experience.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)

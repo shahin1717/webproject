@@ -3,7 +3,7 @@
 
 require_once "cors.php";
 header("Content-Type: application/json");
-require_once __DIR__ . "/includes/includeDB.inc.php";
+require_once __DIR__ . "/../includes/includeDB.inc.php";
 
 $raw = file_get_contents("php://input");
 $data = json_decode($raw, true);

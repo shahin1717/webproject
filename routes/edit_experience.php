@@ -7,7 +7,7 @@ header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Methods: POST");
 
 require_once "cors.php";
-require_once __DIR__ . "/includes/includeDB.inc.php";
+require_once __DIR__ . "/../includes/includeDB.inc.php";
 
 // Read incoming JSON
 $raw = file_get_contents("php://input");
