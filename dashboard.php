@@ -3,6 +3,7 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Driving Experience - Dashboard</title>
@@ -11,7 +12,7 @@
   <!-- jQuery + DataTables -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <link rel="stylesheet"
-        href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+    href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
   <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 
   <!-- Chart.js -->
@@ -25,8 +26,9 @@
       box-sizing: border-box;
     }
 
-    html, body {
-        min-height: 100vh;
+    html,
+    body {
+      min-height: 100vh;
     }
 
     body {
@@ -170,21 +172,26 @@
     }
 
     /* GREEN EDIT BUTTON */
-.btn-edit {
-  padding: 0.35rem 0.8rem;
-  border-radius: 999px;
-  border: 1px solid #4ade80; /* green border */
-  background: rgba(74, 222, 128, 0.12); /* soft green */
-  color: #bbf7d0; /* light green text */
-  cursor: pointer;
-  font-size: 0.85rem;
-  transition: 0.2s ease;
-}
+    .btn-edit {
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid #4ade80;
+      /* green border */
+      background: rgba(74, 222, 128, 0.12);
+      /* soft green */
+      color: #bbf7d0;
+      /* light green text */
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: 0.2s ease;
+    }
 
-.btn-edit:hover {
-  background: #4ade80;  /* bright green */
-  color: #1f2937;       /* dark text */
-}
+    .btn-edit:hover {
+      background: #4ade80;
+      /* bright green */
+      color: #1f2937;
+      /* dark text */
+    }
 
     .icon-label span.icon {
       font-size: 1rem;
@@ -284,29 +291,32 @@
     }
 
     /* ====== CHARTS SECTION (E) ====== */
-.charts-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;    /* spacing between charts */
-}
+    .charts-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      /* spacing between charts */
+    }
 
-.chart-card {
-  width: 100%;
-  background: #2a3056;
-  border-radius: 12px;
-  padding: 1.5rem;
-  height: 380px;
+    .chart-card {
+      width: 100%;
+      background: #2a3056;
+      border-radius: 12px;
+      padding: 1.5rem;
+      height: 380px;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; /* center chart */
-}
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      /* center chart */
+    }
 
-canvas {
-  width: 60% !important;    /* smaller but clean */
-  height: 260px !important;
-}
+    canvas {
+      width: 60% !important;
+      /* smaller but clean */
+      height: 260px !important;
+    }
 
 
     /* ====== DELETE MODAL ====== */
@@ -334,7 +344,7 @@ canvas {
       padding: 1.4rem 1.6rem;
       max-width: 420px;
       width: 100%;
-      box-shadow: 0 14px 32px rgba(0,0,0,0.5);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.5);
     }
 
     .modal-title {
@@ -391,9 +401,11 @@ canvas {
       .topbar-title {
         font-size: 1.1rem;
       }
+
       .topbar-nav {
         gap: 0.6rem;
       }
+
       .topbar-link {
         font-size: 0.8rem;
         padding: 0.25rem 0.6rem;
@@ -401,68 +413,90 @@ canvas {
     }
 
 
-.export-btn {
-  --accent: #ffb347;
-  --accent-dark: #d68a2b;
-  --overlay: rgba(255, 179, 71, 0.25);
-    
-  border: none;
-  display: inline-block;
-  position: relative;
-  padding: 0.7em 2.4em;
-  font-size: 18px;
-  background: transparent;
-  cursor: pointer;
-  user-select: none;
-  overflow: hidden;
-  color: var(--accent);
-  z-index: 1;
-  font-family: inherit;
-  font-weight: 600;
-}
+    .export-btn,
+    .export-btn span,
+    .export-btn:hover,
+    .export-btn:hover span,
+    .export-btn:focus,
+    .export-btn:active {
+      border-radius: 12px !important;
+    }
 
-.export-btn span {
-  position: absolute;
-  inset: 0;
-  border: 3px solid var(--accent);
-  border-radius: 8px;
-  z-index: -1;
-}
 
-.export-btn span::before {
-  content: "";
-  position: absolute;
-  width: 8%;
-  height: 500%;
-  background: var(--overlay);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(-60deg);
-  transition: 0.35s ease;
-}
+    .export-btn {
+      --accent: #ffb347;
+      --accent-dark: #d68a2b;
+      --overlay: rgba(255, 179, 71, 0.25);
 
-.export-btn:hover span::before {
-  transform: translate(-50%, -50%) rotate(-90deg);
-  width: 100%;
-  background: var(--accent);
+      border: none;
+      display: inline-block;
+      position: relative;
+      padding: 0.7em 2.4em;
+      font-size: 18px;
+      background: transparent;
+      cursor: pointer;
+      user-select: none;
+      overflow: hidden;
+      color: var(--accent);
+      outline: none;
+      box-shadow: none;
+      z-index: 1;
+      font-family: inherit;
+      font-weight: 600;
+    }
+    .export-btn:focus {
+    outline: none !important;
+    box-shadow: none !important;
 }
+    .export-btn span {
+      position: absolute;
+      inset: 0;
+      border: 3px solid var(--accent);
+      border-radius: 8px;
+      z-index: -1;
+          box-shadow: inset 0 0 0 2px var(--accent);
 
-.export-btn:hover {
-  color: #1d1f33;
-}
+      
+    }
 
-.export-btn:active span::before {
-  background: var(--accent-dark);
-}
-.export-wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: center; /* centers horizontally */
-    margin: 20px 0;
-}
+    .export-btn span::before {
+      content: "";
+      position: absolute;
+      width: 7.8%;
+      height: 500%;
+      background: var(--overlay);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-60deg);
+      transition: 0.35s ease;
+      backface-visibility: hidden;
+    transform-style: preserve-3d;
+    }
 
+    .export-btn:hover span::before {
+      transform: translate(-50%, -50%) rotate(-90deg);
+      width: 100%;
+      background: var(--accent);
+    }
+
+    .export-btn:hover {
+      color: #1d1f33;
+    }
+
+    .export-btn:active span::before {
+      background: var(--accent-dark);
+    }
+
+    .export-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      /* centers horizontally */
+      margin: 20px 0;
+    }
   </style>
 </head>
+
 <body>
 
   <!-- ====== HEADER (A) ====== -->
@@ -490,45 +524,45 @@ canvas {
   </div>
 
   <div id="editModal" class="modal-overlay">
-  <div class="modal-content">
-    <div class="modal-title">Edit Experience</div>
+    <div class="modal-content">
+      <div class="modal-title">Edit Experience</div>
 
-    <form id="editForm">
+      <form id="editForm">
 
-      <input type="hidden" id="editExpID">
+        <input type="hidden" id="editExpID">
 
-      <label>Date:</label>
-      <input type="date" id="editDate" class="modal-input"><br>
+        <label>Date:</label>
+        <input type="date" id="editDate" class="modal-input"><br>
 
-      <label>Start:</label>
-      <input type="time" id="editStart" class="modal-input"><br>
+        <label>Start:</label>
+        <input type="time" id="editStart" class="modal-input"><br>
 
-      <label>End:</label>
-      <input type="time" id="editEnd" class="modal-input"><br>
+        <label>End:</label>
+        <input type="time" id="editEnd" class="modal-input"><br>
 
-      <label>Kilometers:</label>
-      <input type="number" id="editKm" class="modal-input"><br>
+        <label>Kilometers:</label>
+        <input type="number" id="editKm" class="modal-input"><br>
 
-      <label>Weather:</label>
-      <select id="editWeather" class="modal-input"></select><br>
+        <label>Weather:</label>
+        <select id="editWeather" class="modal-input"></select><br>
 
-      <label>Surface:</label>
-      <select id="editSurface" class="modal-input"></select><br>
+        <label>Surface:</label>
+        <select id="editSurface" class="modal-input"></select><br>
 
-      <label>Traffic:</label>
-      <select id="editTraffic" class="modal-input"></select><br>
+        <label>Traffic:</label>
+        <select id="editTraffic" class="modal-input"></select><br>
 
-      <label>Maneuvers:</label>
-      <select id="editMans" class="modal-input" multiple></select><br>
+        <label>Maneuvers:</label>
+        <select id="editMans" class="modal-input" multiple></select><br>
 
-    </form>
+      </form>
 
-    <div class="modal-actions">
-      <button class="btn-modal-cancel" id="editCancelBtn">Cancel</button>
-      <button class="btn-modal-confirm" id="editSaveBtn">Save</button>
+      <div class="modal-actions">
+        <button class="btn-modal-cancel" id="editCancelBtn">Cancel</button>
+        <button class="btn-modal-confirm" id="editSaveBtn">Save</button>
+      </div>
     </div>
   </div>
-</div>
 
   <!-- MAIN CONTENT -->
   <div class="page-content">
@@ -555,11 +589,11 @@ canvas {
         </tbody>
       </table>
       <div class="export-wrapper">
-    <button id="exportCSV" class="export-btn">
-        📥 Export CSV
-        <span></span>
-    </button>
-</div>
+        <button id="exportCSV" class="export-btn">
+          📥 Export CSV
+          <span></span>
+        </button>
+      </div>
 
     </section>
 
@@ -630,36 +664,36 @@ canvas {
       <h2 class="section-title">Conditions Overview</h2>
       ONLY its internal grid with this upgraded version:
 
-<div class="charts-grid">
+      <div class="charts-grid">
 
-    <div class="chart-card">
-        <div class="chart-card-title">Weather Distribution</div>
-        <canvas id="weatherChart"></canvas>
-    </div>
+        <div class="chart-card">
+          <div class="chart-card-title">Weather Distribution</div>
+          <canvas id="weatherChart"></canvas>
+        </div>
 
-    <div class="chart-card">
-        <div class="chart-card-title">Surface Distribution</div>
-        <canvas id="surfaceChart"></canvas>
-    </div>
+        <div class="chart-card">
+          <div class="chart-card-title">Surface Distribution</div>
+          <canvas id="surfaceChart"></canvas>
+        </div>
 
-    <div class="chart-card">
-        <div class="chart-card-title">Traffic Distribution</div>
-        <canvas id="trafficChart"></canvas>
-    </div>
+        <div class="chart-card">
+          <div class="chart-card-title">Traffic Distribution</div>
+          <canvas id="trafficChart"></canvas>
+        </div>
 
-    <!-- NEW MANEUVERS DISTRIBUTION -->
-    <div class="chart-card">
-        <div class="chart-card-title">Maneuvers Distribution</div>
-        <canvas id="maneuverChart"></canvas>
-    </div>
+        <!-- NEW MANEUVERS DISTRIBUTION -->
+        <div class="chart-card">
+          <div class="chart-card-title">Maneuvers Distribution</div>
+          <canvas id="maneuverChart"></canvas>
+        </div>
 
-    <!-- NEW MONTHLY ACTIVITY CHART -->
-    <div class="chart-card">
-        <div class="chart-card-title">Monthly Driving Activity</div>
-        <canvas id="monthChart"></canvas>
-    </div>
+        <!-- NEW MONTHLY ACTIVITY CHART -->
+        <div class="chart-card">
+          <div class="chart-card-title">Monthly Driving Activity</div>
+          <canvas id="monthChart"></canvas>
+        </div>
 
-</div>
+      </div>
     </section>
 
   </div>
@@ -676,8 +710,8 @@ canvas {
     let weatherChart = null;
     let surfaceChart = null;
     let trafficChart = null;
-let maneuverChart = null;
-let monthChart = null;
+    let maneuverChart = null;
+    let monthChart = null;
     let deleteTargetId = null;
 
     if (window.Chart && Chart.defaults && Chart.defaults.global) {
@@ -771,59 +805,60 @@ let monthChart = null;
         staticData.maneuvers.forEach(m => {
           maneuverMap[m.maneuverID] = m.maneuverDescription;
         });
+
         function fillEditDropdowns() {
-    const wSel = document.getElementById("editWeather");
-    const sSel = document.getElementById("editSurface");
-    const tSel = document.getElementById("editTraffic");
-    const mSel = document.getElementById("editMans");
+          const wSel = document.getElementById("editWeather");
+          const sSel = document.getElementById("editSurface");
+          const tSel = document.getElementById("editTraffic");
+          const mSel = document.getElementById("editMans");
 
-    if (!wSel || !sSel || !tSel || !mSel) return;
+          if (!wSel || !sSel || !tSel || !mSel) return;
 
-    wSel.innerHTML = "";
-    sSel.innerHTML = "";
-    tSel.innerHTML = "";
-    mSel.innerHTML = "";
+          wSel.innerHTML = "";
+          sSel.innerHTML = "";
+          tSel.innerHTML = "";
+          mSel.innerHTML = "";
 
-    // WEATHER OPTIONS
-    Object.keys(weatherMap).forEach(id => {
-        const opt = document.createElement("option");
-        opt.value = id;
-        opt.textContent = weatherMap[id];
-        wSel.appendChild(opt);
-    });
+          // WEATHER OPTIONS
+          Object.keys(weatherMap).forEach(id => {
+            const opt = document.createElement("option");
+            opt.value = id;
+            opt.textContent = weatherMap[id];
+            wSel.appendChild(opt);
+          });
 
-    // SURFACE OPTIONS
-    Object.keys(surfaceMap).forEach(id => {
-        const opt = document.createElement("option");
-        opt.value = id;
-        opt.textContent = surfaceMap[id];
-        sSel.appendChild(opt);
-    });
+          // SURFACE OPTIONS
+          Object.keys(surfaceMap).forEach(id => {
+            const opt = document.createElement("option");
+            opt.value = id;
+            opt.textContent = surfaceMap[id];
+            sSel.appendChild(opt);
+          });
 
-    // TRAFFIC OPTIONS
-    Object.keys(trafficMap).forEach(id => {
-        const opt = document.createElement("option");
-        opt.value = id;
-        opt.textContent = trafficMap[id];
-        tSel.appendChild(opt);
-    });
+          // TRAFFIC OPTIONS
+          Object.keys(trafficMap).forEach(id => {
+            const opt = document.createElement("option");
+            opt.value = id;
+            opt.textContent = trafficMap[id];
+            tSel.appendChild(opt);
+          });
 
-    // MANEUVER OPTIONS (base list)
-    Object.keys(maneuverMap).forEach(id => {
-        const opt = document.createElement("option");
-        opt.value = id;
-        opt.textContent = maneuverMap[id];
-        mSel.appendChild(opt);
-    });
-}
+          // MANEUVER OPTIONS (base list)
+          Object.keys(maneuverMap).forEach(id => {
+            const opt = document.createElement("option");
+            opt.value = id;
+            opt.textContent = maneuverMap[id];
+            mSel.appendChild(opt);
+          });
+        }
 
-// Call it immediately after maps are built
-fillEditDropdowns();
+        // Call it immediately after maps are built
+        fillEditDropdowns();
 
         experiences = Array.isArray(expData) ? expData : (expData.records || []);
         if (!Array.isArray(experiences)) experiences = [];
 
-       initTable(experiences);
+        initTable(experiences);
         renderStatsAndGoals();
         renderCharts();
 
@@ -834,70 +869,84 @@ fillEditDropdowns();
     }
 
     function initTable(experiences) {
-    if (dataTable) {
+      if (dataTable) {
         dataTable.destroy();
         $("#experienceTable tbody").empty();
-    }
+      }
 
-    dataTable = $('#experienceTable').DataTable({
+      dataTable = $('#experienceTable').DataTable({
         data: experiences,
         pageLength: 5,
         responsive: true,
         destroy: true,
 
-        columns: [
-            { data: "expID", title: "ID" },
-            { data: "date", title: "Date" },
-            { data: "startTime", title: "Start" },
-            { data: "endTime", title: "End" },
-            { data: "kilometers", title: "KM" },
+        columns: [{
+            data: "expID",
+            title: "ID"
+          },
+          {
+            data: "date",
+            title: "Date"
+          },
+          {
+            data: "startTime",
+            title: "Start"
+          },
+          {
+            data: "endTime",
+            title: "End"
+          },
+          {
+            data: "kilometers",
+            title: "KM"
+          },
 
-            {
-                data: "weatherID",
-                title: "Weather",
-                render: id => weatherMap[id] || ("Weather " + id)
-            },
+          {
+            data: "weatherID",
+            title: "Weather",
+            render: id => weatherMap[id] || ("Weather " + id)
+          },
 
-            {
-                data: "surfaceID",
-                title: "Surface",
-                render: id => surfaceMap[id] || ("Surface " + id)
-            },
+          {
+            data: "surfaceID",
+            title: "Surface",
+            render: id => surfaceMap[id] || ("Surface " + id)
+          },
 
-            {
-                data: "trafficID",
-                title: "Traffic",
-                render: id => trafficMap[id] || ("Traffic " + id)
-            },
+          {
+            data: "trafficID",
+            title: "Traffic",
+            render: id => trafficMap[id] || ("Traffic " + id)
+          },
 
-            {
-                data: "maneuvers",
-                title: "Maneuvers",
-                render: function(mans) {
-                    if (!Array.isArray(mans) || mans.length === 0) return "None";
-                    return mans.map(id => maneuverMap[id] || ("M" + id)).join(", ");
-                }
-            },
+          {
+            data: "maneuvers",
+            title: "Maneuvers",
+            render: function(mans) {
+              if (!Array.isArray(mans) || mans.length === 0) return "None";
+              return mans.map(id => maneuverMap[id] || ("M" + id)).join(", ");
+            }
+          },
 
-            {
-                data: "expID",
-                title: "Action",
-                render: function(id) {
-                    
-                    return `
+          {
+            data: "expID",
+            title: "Action",
+            render: function(id) {
+
+              return `
                         <button class="btn-edit" data-exp-id="${id}">Edit</button>
                         <button class="btn-delete" data-exp-id="${id}">
                             Delete
                         </button>
                     `;
-                }
             }
+          }
         ]
-    });
-}
+      });
+    }
 
 
-   
+
     // ====== HOURS DIFFERENCE ======
     function getHours(start, end) {
       if (!start || !end) return 0;
@@ -953,145 +1002,158 @@ fillEditDropdowns();
     }
 
     // ====== CHARTS (E) ======
-  function renderCharts() {
+    function renderCharts() {
 
-    // ========== COUNTING ==========
-    const weatherCounts = {};
-    const surfaceCounts = {};
-    const trafficCounts = {};
-    const maneuverCounts = {};
-    const dailyCounts = {};
+      // ========== COUNTING ==========
+      const weatherCounts = {};
+      const surfaceCounts = {};
+      const trafficCounts = {};
+      const maneuverCounts = {};
+      const dailyCounts = {};
 
-    experiences.forEach(exp => {
+      experiences.forEach(exp => {
         weatherCounts[exp.weatherID] = (weatherCounts[exp.weatherID] || 0) + 1;
         surfaceCounts[exp.surfaceID] = (surfaceCounts[exp.surfaceID] || 0) + 1;
         trafficCounts[exp.trafficID] = (trafficCounts[exp.trafficID] || 0) + 1;
 
         (exp.maneuvers || []).forEach(id => {
-            maneuverCounts[id] = (maneuverCounts[id] || 0) + 1;
+          maneuverCounts[id] = (maneuverCounts[id] || 0) + 1;
         });
 
-        const day = exp.date; 
-dailyCounts[day] = (dailyCounts[day] || 0) + 1;
-    });
+        const day = exp.date;
+        dailyCounts[day] = (dailyCounts[day] || 0) + 1;
+      });
 
-    // Make readable donut sizes + clear labels
-    const pieOptions = {
+      // Make readable donut sizes + clear labels
+      const pieOptions = {
         cutoutPercentage: 45,
         legend: {
-            position: "bottom",
-            labels: { fontColor: "#fff", fontSize: 14, padding: 12 }
+          position: "bottom",
+          labels: {
+            fontColor: "#fff",
+            fontSize: 14,
+            padding: 12
+          }
         },
-        animation: { animateScale: true }
-    };
-
-    const destroy = chart => { if (chart) chart.destroy(); };
-    destroy(weatherChart);
-    destroy(surfaceChart);
-    destroy(trafficChart);
-    destroy(maneuverChart);
-    destroy(monthChart);
-
-    // ========= WEATHER CHART =========
-    weatherChart = new Chart(
-        document.getElementById("weatherChart").getContext("2d"),
-        {
-            type: "doughnut",
-            data: {
-                labels: Object.keys(weatherCounts).map(id => weatherMap[id]),
-                datasets: [{
-                    data: Object.values(weatherCounts),
-                    backgroundColor: ["#ffadad", "#ffd6a5", "#fdffb6", "#caffbf", "#9bf6ff", "#a0c4ff"]
-                }]
-            },
-            options: pieOptions
+        animation: {
+          animateScale: true
         }
-    );
+      };
 
-    // ========= SURFACE CHART =========
-    surfaceChart = new Chart(
-        document.getElementById("surfaceChart").getContext("2d"),
-        {
-            type: "doughnut",
-            data: {
-                labels: Object.keys(surfaceCounts).map(id => surfaceMap[id]),
-                datasets: [{
-                    data: Object.values(surfaceCounts),
-                    backgroundColor: ["#bde0fe", "#a2d2ff", "#ffc8dd", "#ffafcc"]
-                }]
-            },
-            options: pieOptions
+      const destroy = chart => {
+        if (chart) chart.destroy();
+      };
+      destroy(weatherChart);
+      destroy(surfaceChart);
+      destroy(trafficChart);
+      destroy(maneuverChart);
+      destroy(monthChart);
+
+      // ========= WEATHER CHART =========
+      weatherChart = new Chart(
+        document.getElementById("weatherChart").getContext("2d"), {
+          type: "doughnut",
+          data: {
+            labels: Object.keys(weatherCounts).map(id => weatherMap[id]),
+            datasets: [{
+              data: Object.values(weatherCounts),
+              backgroundColor: ["#ffadad", "#ffd6a5", "#fdffb6", "#caffbf", "#9bf6ff", "#a0c4ff"]
+            }]
+          },
+          options: pieOptions
         }
-    );
+      );
 
-    // ========= TRAFFIC CHART =========
-    trafficChart = new Chart(
-        document.getElementById("trafficChart").getContext("2d"),
-        {
-            type: "doughnut",
-            data: {
-                labels: Object.keys(trafficCounts).map(id => trafficMap[id]),
-                datasets: [{
-                    data: Object.values(trafficCounts),
-                    backgroundColor: ["#bbf7d0", "#fde68a", "#fecaca"]
-                }]
-            },
-            options: pieOptions
+      // ========= SURFACE CHART =========
+      surfaceChart = new Chart(
+        document.getElementById("surfaceChart").getContext("2d"), {
+          type: "doughnut",
+          data: {
+            labels: Object.keys(surfaceCounts).map(id => surfaceMap[id]),
+            datasets: [{
+              data: Object.values(surfaceCounts),
+              backgroundColor: ["#bde0fe", "#a2d2ff", "#ffc8dd", "#ffafcc"]
+            }]
+          },
+          options: pieOptions
         }
-    );
+      );
 
-    // ========= MANEUVERS PIE =========
-    maneuverChart = new Chart(
-        document.getElementById("maneuverChart").getContext("2d"),
-        {
-            type: "doughnut",
-            data: {
-                labels: Object.keys(maneuverCounts).map(id => maneuverMap[id]),
-                datasets: [{
-                    data: Object.values(maneuverCounts),
-                    backgroundColor: [
-                        "#ffadad", "#ffd6a5", "#fdffb6", "#caffbf",
-                        "#9bf6ff", "#a0c4ff", "#bdb2ff", "#ffc6ff"
-                    ]
-                }]
-            },
-            options: pieOptions
+      // ========= TRAFFIC CHART =========
+      trafficChart = new Chart(
+        document.getElementById("trafficChart").getContext("2d"), {
+          type: "doughnut",
+          data: {
+            labels: Object.keys(trafficCounts).map(id => trafficMap[id]),
+            datasets: [{
+              data: Object.values(trafficCounts),
+              backgroundColor: ["#bbf7d0", "#fde68a", "#fecaca"]
+            }]
+          },
+          options: pieOptions
         }
-    );
+      );
 
-    // ========= MONTHLY LINE CHART =========
-    const sortedDays = Object.keys(dailyCounts).sort();
-    monthChart = new Chart(
-        document.getElementById("monthChart").getContext("2d"),
-        {
-            type: "line",
-            data: {
-                labels: sortedDays,
-                datasets: [{
-                    label: "Drives per Day",
-                    data: sortedDays.map(d => dailyCounts[d]),
-                    borderColor: "#ffb347",
-                    backgroundColor: "rgba(255,179,71,0.25)",
-                    borderWidth: 3,
-                    pointRadius: 6,
-                    pointBackgroundColor: "#ffb347",
-                    tension: 0.35
-                }]
+      // ========= MANEUVERS PIE =========
+      maneuverChart = new Chart(
+        document.getElementById("maneuverChart").getContext("2d"), {
+          type: "doughnut",
+          data: {
+            labels: Object.keys(maneuverCounts).map(id => maneuverMap[id]),
+            datasets: [{
+              data: Object.values(maneuverCounts),
+              backgroundColor: [
+                "#ffadad", "#ffd6a5", "#fdffb6", "#caffbf",
+                "#9bf6ff", "#a0c4ff", "#bdb2ff", "#ffc6ff"
+              ]
+            }]
+          },
+          options: pieOptions
+        }
+      );
+
+      // ========= MONTHLY LINE CHART =========
+      const sortedDays = Object.keys(dailyCounts).sort();
+      monthChart = new Chart(
+        document.getElementById("monthChart").getContext("2d"), {
+          type: "line",
+          data: {
+            labels: sortedDays,
+            datasets: [{
+              label: "Drives per Day",
+              data: sortedDays.map(d => dailyCounts[d]),
+              borderColor: "#ffb347",
+              backgroundColor: "rgba(255,179,71,0.25)",
+              borderWidth: 3,
+              pointRadius: 6,
+              pointBackgroundColor: "#ffb347",
+              tension: 0.35
+            }]
+          },
+          options: {
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  precision: 0,
+                  fontColor: "#fff"
+                }
+              }],
+              xAxes: [{
+                ticks: {
+                  fontColor: "#fff"
+                }
+              }]
             },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: { beginAtZero: true, precision: 0, fontColor: "#fff" }
-                    }],
-                    xAxes: [{
-                        ticks: { fontColor: "#fff" }
-                    }]
-                },
-                legend: { labels: { fontColor: "#fff" } }
+            legend: {
+              labels: {
+                fontColor: "#fff"
+              }
             }
+          }
         }
-    );
-}
+      );
+    }
 
 
     // ====== DELETE MODAL HANDLING ======
@@ -1100,8 +1162,8 @@ dailyCounts[day] = (dailyCounts[day] || 0) + 1;
       const modal = document.getElementById("deleteModal");
       const txt = document.getElementById("deleteModalText");
       txt.textContent =
-        `Are you sure you want to delete experience #${expId}? `
-        + `This will also remove all maneuvers linked to it.`;
+        `Are you sure you want to delete experience #${expId}? ` +
+        `This will also remove all maneuvers linked to it.`;
       modal.classList.add("visible");
     }
 
@@ -1120,7 +1182,9 @@ dailyCounts[day] = (dailyCounts[day] || 0) + 1;
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ expID: deleteTargetId })
+          body: JSON.stringify({
+            expID: deleteTargetId
+          })
         });
 
         const data = await res.json();
@@ -1145,36 +1209,36 @@ dailyCounts[day] = (dailyCounts[day] || 0) + 1;
     }
 
     function openEditModal(expId) {
-    const exp = experiences.find(x => x.expID === expId);
-    if (!exp) return;
+      const exp = experiences.find(x => x.expID === expId);
+      if (!exp) return;
 
-    document.getElementById("editExpID").value = exp.expID;
-    document.getElementById("editDate").value = exp.date;
-    document.getElementById("editStart").value = exp.startTime;
-    document.getElementById("editEnd").value = exp.endTime;
-    document.getElementById("editKm").value = exp.kilometers;
-    document.getElementById("editWeather").value = exp.weatherID;
-    document.getElementById("editSurface").value = exp.surfaceID;
-    document.getElementById("editTraffic").value = exp.trafficID;
+      document.getElementById("editExpID").value = exp.expID;
+      document.getElementById("editDate").value = exp.date;
+      document.getElementById("editStart").value = exp.startTime;
+      document.getElementById("editEnd").value = exp.endTime;
+      document.getElementById("editKm").value = exp.kilometers;
+      document.getElementById("editWeather").value = exp.weatherID;
+      document.getElementById("editSurface").value = exp.surfaceID;
+      document.getElementById("editTraffic").value = exp.trafficID;
 
-    const mansSelect = document.getElementById("editMans");
-    mansSelect.innerHTML = "";
+      const mansSelect = document.getElementById("editMans");
+      mansSelect.innerHTML = "";
 
-    Object.keys(maneuverMap).forEach(id => {
+      Object.keys(maneuverMap).forEach(id => {
         const opt = document.createElement("option");
         opt.value = id;
         opt.textContent = maneuverMap[id];
         if (exp.maneuvers.includes(parseInt(id))) opt.selected = true;
         mansSelect.appendChild(opt);
-    });
+      });
 
-    document.getElementById("editModal").classList.add("visible");
-}
+      document.getElementById("editModal").classList.add("visible");
+    }
 
-document.getElementById("editSaveBtn").addEventListener("click", async () => {
-    const expID = parseInt(document.getElementById("editExpID").value);
-    
-    const payload = {
+    document.getElementById("editSaveBtn").addEventListener("click", async () => {
+      const expID = parseInt(document.getElementById("editExpID").value);
+
+      const payload = {
         expID: expID,
         date: document.getElementById("editDate").value,
         startTime: document.getElementById("editStart").value,
@@ -1184,70 +1248,75 @@ document.getElementById("editSaveBtn").addEventListener("click", async () => {
         surfaceID: parseInt(document.getElementById("editSurface").value),
         trafficID: parseInt(document.getElementById("editTraffic").value),
         maneuvers: Array.from(
-            document.getElementById("editMans").selectedOptions
+          document.getElementById("editMans").selectedOptions
         ).map(o => parseInt(o.value))
-    };
+      };
 
-    const res = await fetch("https://shahin.alwaysdata.net/webproject/routes/edit_experience.php", {
+      const res = await fetch("https://shahin.alwaysdata.net/webproject/routes/edit_experience.php", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify(payload)
-    });
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (data.status === "success") {
+      if (data.status === "success") {
         showMessage("Experience updated", "120,80%,35%");
         closeEditModal();
         loadDashboard(); // refresh everything
-    } else {
+      } else {
         showMessage("Error updating", "0,80%,50%");
-    }
-});
-function closeEditModal() {
-    document.getElementById("editModal").classList.remove("visible");
-}
-document.getElementById("editCancelBtn").onclick = closeEditModal;
-
-document.getElementById("exportCSV").addEventListener("click", () => {
-    let csv = "ID,Date,Start,End,Kilometers,Weather,Surface,Traffic,Maneuvers\n";
-
-    experiences.forEach(exp => {
-        const mans = (exp.maneuvers || []).map(id => maneuverMap[id]).join(";");
-        csv += [
-            exp.expID,
-            exp.date,
-            exp.startTime,
-            exp.endTime,
-            exp.kilometers,
-            weatherMap[exp.weatherID],
-            surfaceMap[exp.surfaceID],
-            trafficMap[exp.trafficID],
-            mans
-        ].join(",") + "\n";
+      }
     });
 
-    const blob = new Blob([csv], { type: "text/csv" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "driving_experiences.csv";
-    link.click();
-});
+    function closeEditModal() {
+      document.getElementById("editModal").classList.remove("visible");
+    }
+    document.getElementById("editCancelBtn").onclick = closeEditModal;
+
+    document.getElementById("exportCSV").addEventListener("click", () => {
+      let csv = "ID,Date,Start,End,Kilometers,Weather,Surface,Traffic,Maneuvers\n";
+
+      experiences.forEach(exp => {
+        const mans = (exp.maneuvers || []).map(id => maneuverMap[id]).join(";");
+        csv += [
+          exp.expID,
+          exp.date,
+          exp.startTime,
+          exp.endTime,
+          exp.kilometers,
+          weatherMap[exp.weatherID],
+          surfaceMap[exp.surfaceID],
+          trafficMap[exp.trafficID],
+          mans
+        ].join(",") + "\n";
+      });
+
+      const blob = new Blob([csv], {
+        type: "text/csv"
+      });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "driving_experiences.csv";
+      link.click();
+    });
 
 
     // ====== EVENT LISTENERS ======
-document.addEventListener("click", (e) => {
-  if (e.target.matches(".btn-delete")) {
-    const expId = parseInt(e.target.getAttribute("data-exp-id"), 10);
-    openDeleteModal(expId);
-  }
-});
-document.addEventListener("click", (e) => {
-    if (e.target.matches(".btn-edit")) {
+    document.addEventListener("click", (e) => {
+      if (e.target.matches(".btn-delete")) {
+        const expId = parseInt(e.target.getAttribute("data-exp-id"), 10);
+        openDeleteModal(expId);
+      }
+    });
+    document.addEventListener("click", (e) => {
+      if (e.target.matches(".btn-edit")) {
         const expId = parseInt(e.target.getAttribute("data-exp-id"), 10);
         openEditModal(expId);
-    }
-});
+      }
+    });
 
     document.getElementById("cancelDeleteBtn").addEventListener("click", () => {
       closeDeleteModal();
@@ -1270,4 +1339,5 @@ document.addEventListener("click", (e) => {
     };
   </script>
 </body>
+
 </html>
