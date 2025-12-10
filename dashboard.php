@@ -218,16 +218,28 @@
     }
 
     /* ====== GOALS SECTION (C) ====== */
+
     .goals-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      display: flex;
       gap: 1rem;
     }
 
     .goal-card {
+      flex: 1;
       background: #2a3056;
       border-radius: 12px;
       padding: 0.9rem 1rem;
+      transition: flex 0.35s ease, transform 0.35s ease, opacity 0.35s ease;
+    }
+
+    .goals-grid:hover .goal-card {
+      flex: 0.7;
+      opacity: 0.75;
+    }
+
+    .goal-card:hover {
+      flex: 2 !important;
+      opacity: 1 !important;
     }
 
     .goal-header {
@@ -243,6 +255,25 @@
       overflow: hidden;
       height: 10px;
       margin-bottom: 0.4rem;
+    }
+
+
+    .funny-text {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: #ffd28a;
+      text-align: center;
+      opacity: 0.85;
+      font-style: italic;
+      transition: opacity 0.25s ease;
+    }
+
+    .goal-card .funny-text {
+      opacity: 0;
+    }
+
+    .goal-card:hover .funny-text {
+      opacity: 1;
     }
 
     .goal-bar-inner {
@@ -262,6 +293,113 @@
       font-weight: bold;
       margin-left: 0.2rem;
     }
+
+    /* Maneuver list wrapper */
+    .maneuver-list {
+      position: absolute;
+      top: 55px;
+      left: 0;
+      width: 100%;
+      padding: 0.5rem 1rem;
+      background: #2a3056;
+      border-radius: 12px;
+      display: none;
+      /* hide by default */
+      z-index: 20;
+    }
+
+    /* Show only when goal-card is hovered */
+    .goal-card:hover .maneuver-list {
+      display: block;
+    }
+
+    /* Ensure card does NOT expand height */
+    .goal-card {
+      position: relative;
+      overflow: visible;
+    }
+
+    /* Flip card container */
+    .maneuver-flip {
+      position: relative;
+      perspective: 1200px;
+      height: 150px;
+      /* not huge */
+      overflow: visible;
+    }
+
+    /* Inner rotating wrapper */
+    .flip-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s ease;
+      transform-style: preserve-3d;
+    }
+
+    /* Flip on hover */
+    .maneuver-flip:hover .flip-inner {
+      transform: rotateY(180deg);
+    }
+
+    /* Front + Back base styles */
+    .flip-front,
+    .flip-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      backface-visibility: hidden;
+      padding: 1rem;
+    }
+
+    /* FRONT */
+    .flip-front {
+      background: #2a3056;
+    }
+
+    /* BACK (better background) */
+    .flip-back {
+      background: #2a3056;
+      transform: rotateY(180deg);
+      color: white;
+      overflow-y: auto;
+      padding-top: 0.5rem;
+    }
+
+    /* Maneuver list styling */
+    #maneuverList {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    #maneuverList li {
+      padding: 4px 0;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #maneuverList li.done {
+      color: #bbf7d0;
+      /* green */
+    }
+
+    #maneuverList li.not-done {
+      color: #fecaca;
+      /* red */
+    }
+
+    .man-title {
+      margin: 0 0 5px 0;
+      font-size: 0.95rem;
+      font-weight: bold;
+      text-align: center;
+    }
+
+
 
     /* ====== SUMMARY STATS (B) ====== */
     .stats-grid {
@@ -444,19 +582,21 @@
       font-family: inherit;
       font-weight: 600;
     }
+
     .export-btn:focus {
-    outline: none !important;
-    box-shadow: none !important;
-}
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
     .export-btn span {
       position: absolute;
       inset: 0;
       border: 3px solid var(--accent);
       border-radius: 8px;
       z-index: -1;
-          box-shadow: inset 0 0 0 2px var(--accent);
+      box-shadow: inset 0 0 0 2px var(--accent);
 
-      
+
     }
 
     .export-btn span::before {
@@ -470,7 +610,7 @@
       transform: translate(-50%, -50%) rotate(-60deg);
       transition: 0.35s ease;
       backface-visibility: hidden;
-    transform-style: preserve-3d;
+      transform-style: preserve-3d;
     }
 
     .export-btn:hover span::before {
@@ -610,6 +750,8 @@
             <span id="kmLabel">0 / 3000 km</span>
             <span id="kmPercent" class="percent">(0%)</span>
           </div>
+          <div class="funny-text kmFunny"></div>
+
         </div>
 
         <div class="goal-card">
@@ -621,16 +763,31 @@
             <span id="hoursLabel">0 / 120 h</span>
             <span id="hoursPercent" class="percent">(0%)</span>
           </div>
+          <div class="funny-text hoursFunny"></div>
+
         </div>
 
-        <div class="goal-card">
-          <div class="goal-header">Maneuvers Mastered (Goal: 12)</div>
-          <div class="goal-bar">
-            <div id="manBar" class="goal-bar-inner"></div>
-          </div>
-          <div class="goal-text">
-            <span id="manLabel">0 / 12</span>
-            <span id="manPercent" class="percent">(0%)</span>
+        <div class="goal-card maneuver-flip">
+          <div class="flip-inner">
+
+            <!-- FRONT SIDE -->
+            <div class="flip-front">
+              <div class="goal-header">Maneuvers Mastered</div>
+              <div class="goal-bar">
+                <div id="manBar" class="goal-bar-inner"></div>
+              </div>
+              <div class="goal-text">
+                <span id="manLabel">0 / 12</span>
+                <span id="manPercent" class="percent">(0%)</span>
+              </div>
+            </div>
+
+            <!-- BACK SIDE (dynamic list generated by JS) -->
+            <div class="flip-back">
+              <h3 class="man-title">Maneuvers</h3>
+              <ul id="maneuverList"></ul>
+            </div>
+
           </div>
         </div>
       </div>
@@ -956,42 +1113,72 @@
       return diffMs / 1000 / 60 / 60;
     }
 
+    function renderManeuverList(uniqueManeuvers) {
+      const list = document.getElementById("maneuverList");
+      list.innerHTML = ""; // clear
+
+      // Get all maneuver names from DB
+      const allMans = Object.keys(maneuverMap);
+
+      allMans.forEach(id => {
+        const name = maneuverMap[id];
+
+        const li = document.createElement("li");
+
+        if (uniqueManeuvers.has(parseInt(id))) {
+          li.classList.add("done");
+          li.innerHTML = `✔️ ${name}`;
+        } else {
+          li.classList.add("not-done");
+          li.innerHTML = `✖️ ${name}`;
+        }
+
+        list.appendChild(li);
+      });
+    }
+
+
+
     // ====== STATS + GOALS (C + B) ======
     function renderStatsAndGoals() {
       const totalDrives = experiences.length;
 
       let totalKm = 0;
       let totalHours = 0;
-      const uniqueManeuvers = new Set();
+      const uniqueManeuvers = new Set(); // only declared ONCE
 
+      // Collect data
       experiences.forEach(exp => {
         totalKm += parseFloat(exp.kilometers) || 0;
         totalHours += getHours(exp.startTime, exp.endTime);
+
         const manArr = Array.isArray(exp.maneuvers) ? exp.maneuvers : [];
         manArr.forEach(id => uniqueManeuvers.add(id));
       });
 
       const maneuversMastered = uniqueManeuvers.size;
 
-      // Summary stats
+      // Update summary stats
       document.getElementById("statTotalDrives").textContent = totalDrives;
       document.getElementById("statTotalHours").textContent = totalHours.toFixed(1);
       document.getElementById("statTotalKm").textContent = totalKm.toFixed(1);
       document.getElementById("statTotalMan").textContent = maneuversMastered;
 
-      // Goals
+      // Goals:
       const kmGoal = 3000;
       const hoursGoal = 120;
-      const manGoal = 12;
+      const manGoal = Object.keys(maneuverMap).length; // dynamic from DB
 
-      const kmPercent = kmGoal > 0 ? Math.min(100, (totalKm / kmGoal) * 100) : 0;
-      const hoursPercent = hoursGoal > 0 ? Math.min(100, (totalHours / hoursGoal) * 100) : 0;
-      const manPercent = manGoal > 0 ? Math.min(100, (maneuversMastered / manGoal) * 100) : 0;
+      const kmPercent = (totalKm / kmGoal) * 100;
+      const hoursPercent = (totalHours / hoursGoal) * 100;
+      const manPercent = (maneuversMastered / manGoal) * 100;
 
+      // Bars
       document.getElementById("kmBar").style.width = kmPercent.toFixed(1) + "%";
       document.getElementById("hoursBar").style.width = hoursPercent.toFixed(1) + "%";
       document.getElementById("manBar").style.width = manPercent.toFixed(1) + "%";
 
+      // Labels
       document.getElementById("kmLabel").textContent = `${totalKm.toFixed(1)} / ${kmGoal} km`;
       document.getElementById("hoursLabel").textContent = `${totalHours.toFixed(1)} / ${hoursGoal} h`;
       document.getElementById("manLabel").textContent = `${maneuversMastered} / ${manGoal}`;
@@ -999,7 +1186,30 @@
       document.getElementById("kmPercent").textContent = `(${kmPercent.toFixed(1)}%)`;
       document.getElementById("hoursPercent").textContent = `(${hoursPercent.toFixed(1)}%)`;
       document.getElementById("manPercent").textContent = `(${manPercent.toFixed(1)}%)`;
+
+      // === NEW: Render maneuver list dynamically ===
+      renderManeuverList(uniqueManeuvers);
+      const funnyLines = [
+        "Vrooooom! 🚗💨",
+        "Burning asphalt, driver! 🔥",
+        "License speedrun in progress 😎",
+        "Your instructor would high-five you 🙌",
+        "You're cooking the road, bro 👨‍🍳",
+        "Certified wheel wizard 🪄",
+        "Highway domination loading… ⚡",
+        "Driving XP +10 🎮"
+      ];
+
+      function randomFunny() {
+        return funnyLines[Math.floor(Math.random() * funnyLines.length)];
+      }
+
+      // Add text now (but we will make it appear on hover via CSS)
+      document.querySelector(".kmFunny").textContent = randomFunny();
+      document.querySelector(".hoursFunny").textContent = randomFunny();
     }
+
+
 
     // ====== CHARTS (E) ======
     function renderCharts() {
