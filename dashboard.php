@@ -741,7 +741,7 @@
     <section class="section-card" id="section-goals">
       <h2 class="section-title">License Progress</h2>
       <div class="goals-grid">
-        <div class="goal-card">
+        <div class="goal-card" id="kmCard">
           <div class="goal-header">Total Kilometers (Goal: 3000 km)</div>
           <div class="goal-bar">
             <div id="kmBar" class="goal-bar-inner"></div>
@@ -754,7 +754,7 @@
 
         </div>
 
-        <div class="goal-card">
+        <div class="goal-card" id="hoursCard">
           <div class="goal-header">Total Driving Hours (Goal: 120 h)</div>
           <div class="goal-bar">
             <div id="hoursBar" class="goal-bar-inner"></div>
@@ -1194,7 +1194,7 @@
         "Burning asphalt, driver! 🔥",
         "License speedrun in progress 😎",
         "Your instructor would high-five you 🙌",
-        "You're cooking the road, bro 👨‍🍳",
+        "You're cooking the road! 👨‍🍳",
         "Certified wheel wizard 🪄",
         "Highway domination loading… ⚡",
         "Driving XP +10 🎮"
@@ -1204,9 +1204,15 @@
         return funnyLines[Math.floor(Math.random() * funnyLines.length)];
       }
 
-      // Add text now (but we will make it appear on hover via CSS)
-      document.querySelector(".kmFunny").textContent = randomFunny();
-      document.querySelector(".hoursFunny").textContent = randomFunny();
+      // KM hover → new funny line
+document.getElementById("kmCard").addEventListener("mouseenter", () => {
+  document.querySelector(".kmFunny").textContent = randomFunny();
+});
+
+// Hours hover → new funny line
+document.getElementById("hoursCard").addEventListener("mouseenter", () => {
+  document.querySelector(".hoursFunny").textContent = randomFunny();
+});
     }
 
 
