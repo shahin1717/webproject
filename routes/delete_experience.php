@@ -5,9 +5,11 @@ require_once "cors.php";
 header("Content-Type: application/json");
 require_once __DIR__ . "/../includes/includeDB.inc.php";
 
-$raw = file_get_contents("php://input");
+// Read JSON body
+$raw  = file_get_contents("php://input");
 $data = json_decode($raw, true);
 
+// Validate input
 if (!is_array($data) || !isset($data["expID"])) {
     echo json_encode([
         "status" => "error",
@@ -27,34 +29,38 @@ if ($expID <= 0) {
 }
 
 try {
-    // Use transaction for safety
-    $mysqli->begin_transaction();
+    // -----------------------------
+    // 1. Start transaction (PDO)
+    // -----------------------------
+    $pdo->beginTransaction();
 
-    // 1) Delete related maneuvers
-    $stmt1 = $mysqli->prepare("DELETE FROM Experience_Maneuver WHERE expID = ?");
-    if (!$stmt1) {
-        throw new Exception("Prepare failed (Experience_Maneuver): " . $mysqli->error);
-    }
-    $stmt1->bind_param("i", $expID);
-    if (!$stmt1->execute()) {
-        throw new Exception("Execute failed (Experience_Maneuver): " . $stmt1->error);
-    }
-    $stmt1->close();
+    // -----------------------------
+    // 2. Delete from Experience_Maneuver
+    // -----------------------------
+    $stmt1 = $pdo->prepare(
+        "DELETE FROM Experience_Maneuver WHERE expID = :expID"
+    );
+    $stmt1->execute([
+        ":expID" => $expID
+    ]);
 
-    // 2) Delete experience itself
-    $stmt2 = $mysqli->prepare("DELETE FROM Experience WHERE expID = ?");
-    if (!$stmt2) {
-        throw new Exception("Prepare failed (Experience): " . $mysqli->error);
-    }
-    $stmt2->bind_param("i", $expID);
-    if (!$stmt2->execute()) {
-        throw new Exception("Execute failed (Experience): " . $stmt2->error);
-    }
+    // -----------------------------
+    // 3. Delete from Experience
+    // -----------------------------
+    $stmt2 = $pdo->prepare(
+        "DELETE FROM Experience WHERE expID = :expID"
+    );
+    $stmt2->execute([
+        ":expID" => $expID
+    ]);
 
-    $affected = $stmt2->affected_rows;
-    $stmt2->close();
+    // Row count check
+    $affected = $stmt2->rowCount();
 
-    $mysqli->commit();
+    // -----------------------------
+    // 4. Commit transaction
+    // -----------------------------
+    $pdo->commit();
 
     if ($affected === 0) {
         echo json_encode([
@@ -68,13 +74,14 @@ try {
         ]);
     }
 
-} catch (Exception $e) {
-    $mysqli->rollback();
+} catch (PDOException $e) {
+    // Rollback on error
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+
     echo json_encode([
         "status" => "error",
         "msg"    => "DB error during delete: " . $e->getMessage()
     ]);
 }
-
-$mysqli->close();
-?>

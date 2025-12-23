@@ -1,5 +1,6 @@
 <?php
 header("Content-Type: application/json");
+
 require_once __DIR__ . "/../includes/includeDB.inc.php";
 
 $sql = "
@@ -12,10 +13,16 @@ $sql = "
     ORDER BY e.expID ASC
 ";
 
-$result = $mysqli->query($sql);
+// Prepare & execute (PDO)
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+
+// Fetch all rows
+$rows = $stmt->fetchAll();
+
 $output = [];
 
-while ($row = $result->fetch_assoc()) {
+foreach ($rows as $row) {
 
     $arr = [
         "expID"      => (int)$row["expID"],
@@ -31,11 +38,13 @@ while ($row = $result->fetch_assoc()) {
 
     // Convert "1,3,4" → [1,3,4]
     if (!empty($row["manList"])) {
-        $arr["maneuvers"] = array_map("intval", explode(",", $row["manList"]));
+        $arr["maneuvers"] = array_map(
+            "intval",
+            explode(",", $row["manList"])
+        );
     }
 
     $output[] = $arr;
 }
 
 echo json_encode($output);
-$mysqli->close();

@@ -1,20 +1,23 @@
 <?php
-
 /***********************************************
  * includeDB.inc.php
  * 
  * - Starts session
  * - Loads all class definitions
- * - Connects to database (mysqli)
+ * - Connects to database (PDO)
  * - Unified include for all backend files
  ***********************************************/
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+
 session_start();
 session_destroy();
 session_start();
 
+// ---------------------------------
+// 1. Load classes
+// ---------------------------------
 $classesPath = __DIR__ . '/../classes/';
 
 require_once $classesPath . 'DrivingExperience.php';
@@ -23,25 +26,28 @@ require_once $classesPath . 'Surface.php';
 require_once $classesPath . 'Traffic.php';
 require_once $classesPath . 'Maneuver.php';
 
-
-// -------------------------------
-// 3. Database credentials
-// -------------------------------
-
+// ---------------------------------
+// 2. Database credentials
+// ---------------------------------
 $host = "mysql-shahin.alwaysdata.net";
-$user = "shahin_hwtester";
-$password = "tester.123";
 $db   = "shahin_hw_project";
+$user = "shahin_hwtester";
+$pass = "tester.123";
+$charset = "utf8";
 
-// -------------------------------
-// 4. Create mysqli connection
-// -------------------------------
+// ---------------------------------
+// 3. Create PDO connection
+// ---------------------------------
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 
-$mysqli = new mysqli(hostname: $host, username: $user, password: $password, database: $db);
+$options = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION, // throw exceptions
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,       // fetch_assoc equivalent
+    PDO::ATTR_EMULATE_PREPARES   => false,                  // real prepared statements
+];
 
-if ($mysqli->connect_errno) {
-    die("<b>Database connection failed:</b> " . $mysqli->connect_error);
+try {
+    $pdo = new PDO($dsn, $user, $pass, $options);
+} catch (PDOException $e) {
+    die("<b>Database connection failed:</b> " . $e->getMessage());
 }
-
-// Set charset
-$mysqli->set_charset("utf8");
