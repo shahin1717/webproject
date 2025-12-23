@@ -505,7 +505,7 @@
 
         <div class="form-group">
           <label for="kms">Kilometers</label>
-          <input type="number" id="kms" name="kilometers" placeholder="Enter kilometers..." min="1">
+          <input type="number" id="kms" name="kilometers" min="1">
         </div>
 
         <div class="form-group">
@@ -534,7 +534,7 @@
 
           <div id="maneuverDropdown" class="dropdown-wrapper">
             <div id="maneuverDisplay" class="dropdown-display">
-              Choose...
+              Choose maneuvers…
             </div>
 
             <div id="maneuverList" class="dropdown-list">
