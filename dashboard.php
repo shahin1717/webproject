@@ -972,7 +972,7 @@
     let trafficChart = null;
     let maneuverChart = null;
     let monthChart = null;
-    let deleteTargetCode = null;
+    let deleteTargetId = null;
 
     if (window.Chart && Chart.defaults && Chart.defaults.global) {
       Chart.defaults.global.defaultFontColor = "#ffffff";
@@ -1036,9 +1036,7 @@
       try {
         const [staticRes, expRes] = await Promise.all([
           fetch("https://shahin.alwaysdata.net/webproject/routes/get_static_data.php"),
-          fetch("https://shahin.alwaysdata.net/webproject/routes/get_experiences.php", {
-            credentials: "include"
-          })
+          fetch("https://shahin.alwaysdata.net/webproject/routes/get_experiences.php")
         ]);
 
         const staticData = await staticRes.json();
@@ -1191,18 +1189,18 @@
           },
 
           {
-  data: "expID",
-  title: "Action",
-  render: function(id, type, row) {
-    return `
-      <button class="btn-edit" data-exp-id="${id}">Edit</button>
-      <button class="btn-delete" data-exp-code="${row.expCode}">
-        Delete
-      </button>
-    `;
-  }
-}
+            data: "expID",
+            title: "Action",
+            render: function(id) {
 
+              return `
+                        <button class="btn-edit" data-exp-id="${id}">Edit</button>
+                        <button class="btn-delete" data-exp-id="${id}">
+                            Delete
+                        </button>
+                    `;
+            }
+          }
         ]
       });
     }
@@ -1478,12 +1476,12 @@ document.getElementById("hoursCard").addEventListener("mouseenter", () => {
 
 
     // ====== DELETE MODAL HANDLING ======
-    function openDeleteModal(code) {
-      deleteTargetCode = code;
+    function openDeleteModal(expId) {
+      deleteTargetId = expId;
       const modal = document.getElementById("deleteModal");
       const txt = document.getElementById("deleteModalText");
       txt.textContent =
-        `Are you sure you want to delete experience #${code}? ` +
+        `Are you sure you want to delete experience #${expId}? ` +
         `This will also remove all maneuvers linked to it.`;
       modal.classList.add("visible");
     }
@@ -1495,7 +1493,7 @@ document.getElementById("hoursCard").addEventListener("mouseenter", () => {
     }
 
     async function performDelete() {
-      if (!deleteTargetCode) return;
+      if (!deleteTargetId) return;
 
       try {
         const res = await fetch("https://shahin.alwaysdata.net/webproject/routes/delete_experience.php", {
@@ -1503,17 +1501,16 @@ document.getElementById("hoursCard").addEventListener("mouseenter", () => {
           headers: {
             "Content-Type": "application/json"
           },
-          credentials: "include",
           body: JSON.stringify({
-            expCode: deleteTargetCode
+            expID: deleteTargetId
           })
         });
 
         const data = await res.json();
 
         if (data.status === "success") {
-          showMessage(`Experience #${deleteTargetCode} deleted`, "120, 80%, 35%");
-          experiences = experiences.filter(e => e.expCode !== deleteTargetCode);
+          showMessage(`Experience #${deleteTargetId} deleted`, "120, 80%, 35%");
+          experiences = experiences.filter(e => e.expID !== deleteTargetId);
           initTable(experiences);
 
           renderStatsAndGoals();
@@ -1629,8 +1626,8 @@ document.getElementById("hoursCard").addEventListener("mouseenter", () => {
     // ====== EVENT LISTENERS ======
     document.addEventListener("click", (e) => {
       if (e.target.matches(".btn-delete")) {
-        const expCode = e.target.getAttribute("data-exp-code");
-        openDeleteModal(expCode);
+        const expId = parseInt(e.target.getAttribute("data-exp-id"), 10);
+        openDeleteModal(expId);
       }
     });
     document.addEventListener("click", (e) => {
