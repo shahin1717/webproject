@@ -1,87 +1,48 @@
 <?php
-// delete_experience.php
-
+session_start();
+session_destroy();
+session_start();
 require_once "cors.php";
 header("Content-Type: application/json");
 require_once __DIR__ . "/../includes/includeDB.inc.php";
 
-// Read JSON body
-$raw  = file_get_contents("php://input");
-$data = json_decode($raw, true);
+$data = json_decode(file_get_contents("php://input"), true);
 
-// Validate input
-if (!is_array($data) || !isset($data["expID"])) {
-    echo json_encode([
-        "status" => "error",
-        "msg"    => "expID is required"
-    ]);
+if (!isset($data["expCode"])) {
+    echo json_encode(["status" => "error", "msg" => "expCode required"]);
     exit;
 }
 
-$expID = (int)$data["expID"];
+$code = $data["expCode"];
 
-if ($expID <= 0) {
-    echo json_encode([
-        "status" => "error",
-        "msg"    => "Invalid expID"
-    ]);
+if (!isset($_SESSION["exp_map"][$code])) {
+    echo json_encode(["status" => "error", "msg" => "Invalid or expired code"]);
     exit;
 }
+
+$expID = $_SESSION["exp_map"][$code];
 
 try {
-    // -----------------------------
-    // 1. Start transaction (PDO)
-    // -----------------------------
     $pdo->beginTransaction();
 
-    // -----------------------------
-    // 2. Delete from Experience_Maneuver
-    // -----------------------------
-    $stmt1 = $pdo->prepare(
-        "DELETE FROM Experience_Maneuver WHERE expID = :expID"
-    );
-    $stmt1->execute([
-        ":expID" => $expID
-    ]);
+    $pdo->prepare(
+        "DELETE FROM Experience_Maneuver WHERE expID = :id"
+    )->execute([":id" => $expID]);
 
-    // -----------------------------
-    // 3. Delete from Experience
-    // -----------------------------
-    $stmt2 = $pdo->prepare(
-        "DELETE FROM Experience WHERE expID = :expID"
-    );
-    $stmt2->execute([
-        ":expID" => $expID
-    ]);
+    $pdo->prepare(
+        "DELETE FROM Experience WHERE expID = :id"
+    )->execute([":id" => $expID]);
 
-    // Row count check
-    $affected = $stmt2->rowCount();
-
-    // -----------------------------
-    // 4. Commit transaction
-    // -----------------------------
     $pdo->commit();
 
-    if ($affected === 0) {
-        echo json_encode([
-            "status" => "error",
-            "msg"    => "No experience found with that ID"
-        ]);
-    } else {
-        echo json_encode([
-            "status" => "success",
-            "msg"    => "Experience deleted successfully"
-        ]);
-    }
+    unset($_SESSION["exp_map"][$code]); // prevent reuse
+
+    echo json_encode(["status" => "success"]);
 
 } catch (PDOException $e) {
-    // Rollback on error
-    if ($pdo->inTransaction()) {
-        $pdo->rollBack();
-    }
-
+    $pdo->rollBack();
     echo json_encode([
         "status" => "error",
-        "msg"    => "DB error during delete: " . $e->getMessage()
+        "msg" => "Delete failed"
     ]);
 }
