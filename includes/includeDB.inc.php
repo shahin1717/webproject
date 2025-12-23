@@ -37,7 +37,7 @@ $db   = "shahin_hw_project";
 // 4. Create mysqli connection
 // -------------------------------
 
-$mysqli = new mysqli($host, $user, $password, $db);
+$mysqli = new mysqli(hostname: $host, username: $user, password: $password, database: $db);
 
 if ($mysqli->connect_errno) {
     die("<b>Database connection failed:</b> " . $mysqli->connect_error);
