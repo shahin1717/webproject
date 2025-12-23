@@ -634,6 +634,111 @@
       /* centers horizontally */
       margin: 20px 0;
     }
+
+    /* ===============================
+   📱 MOBILE RESPONSIVE (GRID)
+   =============================== */
+@media (max-width: 768px) {
+
+  /* ===== PAGE ===== */
+  .page-content {
+    max-width: 100%;
+    margin: 80px 0 30px 0;
+    padding: 0 0.6rem 30px;
+  }
+
+   #section-table {
+    overflow-x: auto;
+  }
+
+  
+  table.dataTable {
+    min-width: 720px;
+  }
+  /* ===== TOPBAR ===== */
+  .topbar {
+    flex-direction: column;
+    height: auto;
+    padding: 0.6rem 1rem;
+    gap: 0.4rem;
+    position: sticky;
+    top: 0;
+  }
+
+  .topbar-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* ===== TABLE ===== */
+  table.dataTable {
+    font-size: 0.75rem;
+  }
+
+  .btn-edit,
+  .btn-delete {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  /* ===== GOALS → GRID ===== */
+  .goals-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .goal-card {
+    flex: none !important;
+    transform: none !important;
+  }
+
+  .goal-card:hover {
+    flex: none !important;
+  }
+
+  .goal-card .funny-text {
+    opacity: 1;
+  }
+
+  /* Disable hover-only behavior on mobile */
+  .goal-card:hover .maneuver-list {
+    display: none;
+  }
+
+  /* ===== STATS GRID ===== */
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* ===== CHARTS GRID ===== */
+  .charts-grid {
+    gap: 1.2rem;
+  }
+
+  .chart-card {
+    height: auto;
+    padding: 1rem;
+  }
+
+  canvas {
+    width: 100% !important;
+    height: 220px !important;
+  }
+
+  /* ===== MODALS ===== */
+  .modal-content {
+    width: 95%;
+    padding: 1.2rem;
+  }
+
+  /* ===== EXPORT BUTTON ===== */
+  .export-btn {
+    font-size: 15px;
+    padding: 0.6em 1.6em;
+  }
+}
+
   </style>
 </head>
 
@@ -819,7 +924,7 @@
     <!-- E) CHARTS -->
     <section class="section-card" id="section-charts">
       <h2 class="section-title">Conditions Overview</h2>
-            
+
       <div class="charts-grid">
 
         <div class="chart-card">
