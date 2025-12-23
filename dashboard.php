@@ -815,13 +815,17 @@
         </div>
       </div>
     </section>
-
+    
     <!-- E) CHARTS -->
     <section class="section-card" id="section-charts">
       <h2 class="section-title">Conditions Overview</h2>
-      ONLY its internal grid with this upgraded version:
-
+            
       <div class="charts-grid">
+
+        <div class="chart-card">
+          <div class="chart-card-title">Monthly Driving Activity</div>
+          <canvas id="monthChart"></canvas>
+        </div>
 
         <div class="chart-card">
           <div class="chart-card-title">Weather Distribution</div>
@@ -838,17 +842,11 @@
           <canvas id="trafficChart"></canvas>
         </div>
 
-        <!-- NEW MANEUVERS DISTRIBUTION -->
         <div class="chart-card">
           <div class="chart-card-title">Maneuvers Distribution</div>
           <canvas id="maneuverChart"></canvas>
         </div>
 
-        <!-- NEW MONTHLY ACTIVITY CHART -->
-        <div class="chart-card">
-          <div class="chart-card-title">Monthly Driving Activity</div>
-          <canvas id="monthChart"></canvas>
-        </div>
 
       </div>
     </section>
