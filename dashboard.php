@@ -635,6 +635,63 @@
       margin: 20px 0;
     }
 
+    /* ===== SUMMARY HOVER FUN ===== */
+.stat-box {
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.stat-box:hover {
+  transform: scale(1.04);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.45);
+}
+
+.stat-funny {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: #ffd28a;
+  opacity: 0;
+  font-style: italic;
+  transition: opacity 0.25s ease;
+}
+
+.stat-box:hover .stat-funny {
+  opacity: 1;
+}
+
+/* ===== CHART CARD HOVER EFFECT ===== */
+.chart-card {
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.chart-card:hover {
+  transform: translateY(-6px) scale(1.015);
+  box-shadow: 
+    0 18px 36px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 179, 71, 0.15);
+}
+
+
+.chart-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: radial-gradient(
+    circle at top,
+    rgba(255, 179, 71, 0.25),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.chart-card:hover::after {
+  opacity: 1;
+}
+
     /* ===============================
    📱 MOBILE RESPONSIVE (GRID)
    =============================== */
@@ -902,22 +959,31 @@
     <section class="section-card" id="section-stats">
       <h2 class="section-title">Summary</h2>
       <div class="stats-grid">
+
         <div class="stat-box">
           <div class="stat-label">Total Drives</div>
           <div id="statTotalDrives" class="stat-value">0</div>
+            <div class="stat-funny"></div>
         </div>
+
         <div class="stat-box">
           <div class="stat-label">Total Hours</div>
           <div id="statTotalHours" class="stat-value">0</div>
+            <div class="stat-funny"></div>
         </div>
+
         <div class="stat-box">
           <div class="stat-label">Total Distance (km)</div>
           <div id="statTotalKm" class="stat-value">0</div>
+            <div class="stat-funny"></div>
         </div>
+
         <div class="stat-box">
           <div class="stat-label">Maneuvers Logged</div>
           <div id="statTotalMan" class="stat-value">0</div>
+            <div class="stat-funny"></div>
         </div>
+
       </div>
     </section>
     
@@ -1315,6 +1381,14 @@ document.getElementById("kmCard").addEventListener("mouseenter", () => {
 // Hours hover → new funny line
 document.getElementById("hoursCard").addEventListener("mouseenter", () => {
   document.querySelector(".hoursFunny").textContent = randomFunny();
+});
+document.querySelectorAll(".stat-box").forEach(box => {
+  box.addEventListener("mouseenter", () => {
+    const funny = box.querySelector(".stat-funny");
+    if (funny) {
+      funny.textContent = randomFunny();
+    }
+  });
 });
     }
 
