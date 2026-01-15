@@ -29,10 +29,10 @@ require_once $classesPath . 'Maneuver.php';
 // ---------------------------------
 // 2. Database credentials
 // ---------------------------------
-$host = "mysql-shahin.alwaysdata.net";
-$db   = "shahin_hw_project";
-$user = "shahin_hwtester";
-$pass = "tester.123";
+$host = ""; // your host name
+$db   = ""; // your database name
+$user = ""; // DB service username  
+$pass = ""; // password
 $charset = "utf8";
 
 // ---------------------------------
